@@ -18,6 +18,7 @@ public class CameraManager : MonoBehaviour
     private float  minY = 0;
     private float  maxY = 0;
 
+    public bool isFixedY = false;
 
     private void Awake()
     {
@@ -47,9 +48,15 @@ public class CameraManager : MonoBehaviour
         Vector3 lerpPosition = Vector3.Lerp(transform.position, destinationPosition,
             lerpSpeed * Time.deltaTime);
 
-        lerpPosition.x = Mathf.Clamp(lerpPosition.x, minX, maxX);
-        lerpPosition.y = Mathf.Clamp(lerpPosition.y, minY, maxY);
+        if (cameraPivot != null)
+        {
+            lerpPosition.x = Mathf.Clamp(lerpPosition.x, minX, maxX);
+            lerpPosition.y = Mathf.Clamp(lerpPosition.y, minY, maxY);
+        }
 
-        transform.position = lerpPosition;
+        if(!isFixedY)
+            transform.position = lerpPosition;
+        else
+            transform.position = new Vector3(lerpPosition.x, transform.position.y, transform.position.z);
     }
 }

@@ -9,18 +9,33 @@ public abstract class BaseController : MonoBehaviour
     protected SpriteRenderer _spriteRenderer;
     protected Rigidbody2D _rigidbody;
 
+    [Header("Define")]
     [SerializeField]
     protected Define.State _state = Define.State.Idle;
     [SerializeField]
     protected Define.Dir _animDir = Define.Dir.None;
+
+    [Header("Dir")]
     [SerializeField]
     protected Vector2 _moveDir = Vector2.zero;
     public Vector2 _MoveDir { get { return _moveDir; } }
 
-    // 이동 관련 변수
+
+    [Header("Weapon Info")]
+    [SerializeField] public WeaponHandler _WeaponPrefab;
+    [SerializeField] protected WeaponHandler _weaponHandler;
+    [SerializeField]
+    private Transform _weaponPivot;
+    protected Vector2 _attackDir = Vector2.right;
+    protected bool _isAttacking;
+    private float _timeSinceLastAttack = float.MaxValue;
+    protected bool _isCanAttack = true;
+
+    [Header("Stat Info")]
+    // 이동 관련 변수 - 추후 스탯으로 넘겨야함
     [SerializeField]
     protected float _movePower = 0f;
-    // 점프 관련 변수
+    // 점프 관련 변수 - 추후 스탯으로 넘겨야함
     protected float _height = 0f;
     [SerializeField]
     protected float _jumpPower = 0f;
@@ -33,6 +48,14 @@ public abstract class BaseController : MonoBehaviour
     private void Awake()
     {
         Init();
+
+        if (_WeaponPrefab != null)
+        {
+            _weaponHandler = Instantiate(_WeaponPrefab, this.transform);
+            _weaponHandler.transform.position = _weaponPivot.position;
+        }
+
+
     }
 
     public virtual Define.State State
@@ -74,6 +97,8 @@ public abstract class BaseController : MonoBehaviour
                 break;
 
         }
+
+        HandleAttackDelay();
     }
 
     private void FixedUpdate()
@@ -89,6 +114,29 @@ public abstract class BaseController : MonoBehaviour
         UpdateJump();
     }
 
+
+    private void HandleAttackDelay()
+    {
+        if (_weaponHandler == null)
+            return;
+
+        if (_timeSinceLastAttack <= _weaponHandler.Delay)
+        {
+            _timeSinceLastAttack += Time.deltaTime;
+        }
+
+        if (_isAttacking && _timeSinceLastAttack > _weaponHandler.Delay)
+        {
+            _isAttacking = false;
+            _timeSinceLastAttack = 0;
+            Attack();
+        }
+    }
+
+    protected virtual void Attack()
+    {
+        _weaponHandler.Attack(_attackDir);
+    }
     protected abstract void Init();
 
    // protected virtual void UpdateDie() { }

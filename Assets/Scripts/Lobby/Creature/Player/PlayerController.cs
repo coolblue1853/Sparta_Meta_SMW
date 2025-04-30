@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class PlayerController : BaseController
 {
+    [SerializeField]
+    private bool _justDirMove = false;
+
+    [SerializeField]
+    private GameObject _cusor;
+    private Vector2 _cusorOffset = new Vector2(-0.1f, -0.25f);
+
     protected override void Init()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
             Debug.Log("rb2D가 없습니다!");
-
-
     }
 
 
@@ -20,7 +26,6 @@ public class PlayerController : BaseController
     protected override void UpdateIdle()
     {
         base.UpdateIdle();
-
     }
 
     // 플레이어 이동
@@ -32,23 +37,48 @@ public class PlayerController : BaseController
         _rigidbody.velocity = _moveDir * _movePower;
     }
 
+    void OnAttack(InputValue inputValue)
+    {
+        _isAttacking = true;
+    }
+
+
     // 플레이어 조작 - 추후 새 스크립트를 팔지 고민
     void OnMove(InputValue inputValue)
     {
         Vector2 input = inputValue.Get<Vector2>();
-
-        if (input != Vector2.zero)
+        if (input != Vector2.zero )
         {
-            _state = Define.State.Moving;
+            ChangeCusor(input);
+            _attackDir = input;
+            if (input.x > 0)
+                _spriteRenderer.flipX = false;
+            if (input.x < 0)
+                _spriteRenderer.flipX = true;
+
+            if (!_justDirMove)
+                _state = Define.State.Moving;
         }
         else
         {
-            _state = Define.State.Idle;
-            _rigidbody.velocity = Vector3.zero;
+            SetIdle();
         }
 
         _moveDir = input;
     }
+
+    void ChangeCusor(Vector2 input)
+    {
+        Vector2 offeset = _cusorOffset;
+        if (input.x < 0)
+            offeset.x = Mathf.Abs(_cusorOffset.x);
+
+        _cusor.transform.localPosition = input + offeset;
+        
+        float angle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
+        _cusor.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
 
     // 점프 입력
     void OnJump(InputValue inputValue)
@@ -77,6 +107,33 @@ public class PlayerController : BaseController
         }
 
         _spriteRenderer.transform.localPosition = new Vector3(0, _height, 0);
+    }
+
+    // 쉬프트를 이용한 방향 전환
+    void OnShift(InputValue inputValue)
+    {
+        float input = inputValue.Get<float> ();
+
+        if (input == 1.0f)
+        {
+            SetIdle();
+            _justDirMove = true;
+        }
+        else
+        {
+            _justDirMove = false;
+            if (_moveDir != Vector2.zero)
+            {
+                _state = Define.State.Moving;
+            }
+        }
+
+    }
+
+    void SetIdle()
+    {
+        _state = Define.State.Idle;
+        _rigidbody.velocity = Vector3.zero;
     }
 
 }
