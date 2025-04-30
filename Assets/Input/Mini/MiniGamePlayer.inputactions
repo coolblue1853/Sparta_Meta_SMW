@@ -1,0 +1,45 @@
+{
+    "name": "MiniGamePlayer",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "2b3f8673-3d3f-4e06-91e4-6eba0320dac8",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "c0c2efdc-6995-4269-bcf5-31540282593d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2f3895f6-65e8-4044-98a2-84c8b0f9fc00",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab265483-17fe-4a34-98e0-5aad25ccd1dd",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -12,7 +12,13 @@ public class Define
         Skill,
         Jump,
     }
-    
+    public enum MiniGameState
+    {
+        None,
+        Init,
+        InGame,
+        End,
+    }
     public enum Dir
     {
         None,

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -7,16 +8,17 @@ public class Player : MonoBehaviour
 
     public float flapForce = 6f;
     public float forwardSpeed = 3f;
-    public bool isDead = false;
-    float deathCooldown = 0f;
 
     bool isFlap = false;
 
     public bool godMode = false;
 
+    MiniGameScene _gameScene;
+
     void Start()
     {
         _rigidbody = transform.GetComponent<Rigidbody2D>();
+        _gameScene = MiniGameScene.instance;
         /*
         animator = transform.GetComponentInChildren<Animator>();
 
@@ -33,34 +35,9 @@ public class Player : MonoBehaviour
         */
     }
 
-    void Update()
-    {
-        if (isDead)
-        {
-            if (deathCooldown <= 0)
-            {
-                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-                {
-                    // 게임 재시작
-                }
-            }
-            else
-            {
-                deathCooldown -= Time.deltaTime;
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-            {
-                isFlap = true;
-            }
-        }
-    }
-
     public void FixedUpdate()
     {
-        if (isDead)
+        if (_gameScene._state != Define.MiniGameState.InGame)
             return;
 
         Vector3 velocity = _rigidbody.velocity;
@@ -78,26 +55,43 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
+    void OnClick()
+    {
+        if(_gameScene._state == Define.MiniGameState.Init)
+        {
+            _gameScene.GameStart();
+        }
+        else if (_gameScene._state == Define.MiniGameState.InGame)
+        {
+            isFlap = true;
+        }
+        else if (_gameScene._state == Define.MiniGameState.End && _gameScene.isCanGoLobby)
+        {
+            _gameScene.GoLobby();
+        }
+    }
+
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Obstacle"))
+        if (collision.transform.CompareTag("Obstacle") || collision.transform.CompareTag("BackGround"))
         {
             if (godMode)
                 return;
 
-            if (isDead)
+            if (_gameScene._state == Define.MiniGameState.End)
                 return;
 
+            _gameScene.GameEnd();
             //  animator.SetInteger("IsDie", 1);
-            isDead = true;
-            deathCooldown = 1f;
+
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Hole"))
         {
-            MiniGameScene.instance.AddScore(1);
+            _gameScene.AddScore(1);
         }
     }
 }
