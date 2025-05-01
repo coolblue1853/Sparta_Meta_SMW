@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,9 +16,8 @@ public class DataManager : MonoBehaviour
             instance = this;
     }
 
-    public void Save(List<string> animatorAddresses, string savePath)
+    public void Save(string[] animatorAddresses, string savePath)
     {
-        Debug.Log(savePath);
         var dataList = new AnimatorSaveDataList();
 
         foreach (var addr in animatorAddresses)
@@ -27,39 +27,38 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(savePath, json);
     }
 
-    public void Load( List<Animator> targetAnimators, string savePath)
+    public string[] Load(Animator[] targetAnimators, string savePath)
     {
         if (!File.Exists(savePath))
         {
             Debug.LogWarning("저장 파일이 없습니다.");
-            return;
+            return null;
         }
 
         string json = File.ReadAllText(savePath);
         var dataList = JsonUtility.FromJson<AnimatorSaveDataList>(json);
 
-        if (dataList.animators.Count != targetAnimators.Count)
+        if (dataList.animators.Count != targetAnimators.Length)
         {
             Debug.LogError("Animator 개수 불일치");
-            return;
+            return null;
         }
 
         for (int i = 0; i < dataList.animators.Count; i++)
         {
-            int index = i;
             string addr = dataList.animators[i].animatorAddress;
+            var animator = targetAnimators[i];
 
             Addressables.LoadAssetAsync<RuntimeAnimatorController>(addr).Completed += handle =>
             {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    targetAnimators[index].runtimeAnimatorController = handle.Result;
-                }
+                    animator.runtimeAnimatorController = handle.Result;
                 else
-                {
-                    Debug.LogError($"Animator {index} 로드 실패: {addr}");
-                }
+                    Debug.LogError($"Animator {i} 로드 실패: {addr}");
             };
         }
+
+        // 주소만 추출해서 반환
+        return dataList.animators.Select(a => a.animatorAddress).ToArray();
     }
 }

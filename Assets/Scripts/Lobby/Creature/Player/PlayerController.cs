@@ -9,38 +9,29 @@ using UnityEngine.Windows;
 
 public class PlayerController : BaseController
 {
-    [SerializeField]
-    private bool _justDirMove = false;
+    [SerializeField] private bool _justDirMove = false;
+    [SerializeField] private GameObject _cusor;
 
-    [SerializeField]
-    private GameObject _cusor;
     private Vector2 _cusorOffset = new Vector2(-0.1f, -0.25f);
 
-    public List<string> animatorAddresses;
-    public List<Animator> targetAnimators;
-    private Action onEndGameSave;
-    private Action onMoveSceneSave;
+    [SerializeField] private string[] animatorAddresses;
+    [SerializeField] private Animator[] targetAnimators;
     private string savePath => Application.persistentDataPath + "/Player.json";
     protected override void Init()
     {
-        AddInvoke();
-
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
             Debug.Log("rb2D가 없습니다!");
     }
     private void OnEnable()
     {
-        DataManager.instance.Load(targetAnimators, savePath);
+        animatorAddresses = DataManager.instance.Load(targetAnimators, savePath);
     }
 
-    private void OnDisable()
+    public void SetAnimator(RuntimeAnimatorController controller,string adress,
+        out RuntimeAnimatorController output, out string outAdress)
     {
-        DeleteInvoke();
-    }
-
-    public void SetAnimator(RuntimeAnimatorController controller,string adress, out RuntimeAnimatorController output)
-    {
+        outAdress = animatorAddresses[0];
         output = _animator.runtimeAnimatorController;
         _animator.runtimeAnimatorController = controller;
         animatorAddresses[0] = adress;
@@ -68,6 +59,24 @@ public class PlayerController : BaseController
         _isAttacking = true;
     }
 
+    protected override void UpdateJump()
+    {
+        if (!_isGrounded)
+        {
+            _verticalSpeed -= _gravity * Time.deltaTime;
+            _height += _verticalSpeed * Time.deltaTime;
+
+            if (_height <= 0.01f) // 여유를 줌
+            {
+                _height = 0f;
+                _verticalSpeed = 0f;
+                _isGrounded = true;
+            }
+        }
+
+        _spriteRenderer.transform.localPosition = new Vector3(0, _height, 0);
+    }
+
 
     // 플레이어 조작 - 추후 새 스크립트를 팔지 고민
     void OnMove(InputValue inputValue)
@@ -93,19 +102,6 @@ public class PlayerController : BaseController
         _moveDir = input;
     }
 
-    void ChangeCusor(Vector2 input)
-    {
-        Vector2 offeset = _cusorOffset;
-        if (input.x < 0)
-            offeset.x = Mathf.Abs(_cusorOffset.x);
-
-        _cusor.transform.localPosition = input + offeset;
-        
-        float angle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
-        _cusor.transform.rotation = Quaternion.Euler(0, 0, angle);
-    }
-
-
     // 점프 입력
     void OnJump(InputValue inputValue)
     {
@@ -117,25 +113,6 @@ public class PlayerController : BaseController
             UpdateJump();
         }
     }
-
-    protected override void UpdateJump()
-    {
-        if (!_isGrounded)
-        {
-            _verticalSpeed -= _gravity* Time.deltaTime;
-            _height += _verticalSpeed * Time.deltaTime;
-
-            if (_height <= 0.01f) // 여유를 줌
-            {
-                _height = 0f;
-                _verticalSpeed = 0f;
-                _isGrounded = true;
-            }
-        }
-
-        _spriteRenderer.transform.localPosition = new Vector3(0, _height, 0);
-    }
-
     // 쉬프트를 이용한 방향 전환
     void OnShift(InputValue inputValue)
     {
@@ -156,32 +133,21 @@ public class PlayerController : BaseController
         }
 
     }
+    void ChangeCusor(Vector2 input)
+    {
+        Vector2 offeset = _cusorOffset;
+        if (input.x < 0)
+            offeset.x = Mathf.Abs(_cusorOffset.x);
 
+        _cusor.transform.localPosition = input + offeset;
+
+        float angle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
+        _cusor.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
     void SetIdle()
     {
         State = Define.State.Idle;
         _rigidbody.velocity = Vector3.zero;
     }
-
-    void AddInvoke()
-    {
-        onEndGameSave = () => DataManager.instance.Save(animatorAddresses, savePath);
-        onMoveSceneSave = () => DataManager.instance.Save(animatorAddresses, savePath);
-
-        LobbyScene.EndGameSave += onEndGameSave;
-        LobbyScene.MoveSceneSave += onMoveSceneSave;
-    }
-    void DeleteInvoke()
-    {
-        LobbyScene.EndGameSave -= onEndGameSave;
-        LobbyScene.MoveSceneSave -= onMoveSceneSave;
-    }
-
-    public void ResetInvoke()
-    {
-        DeleteInvoke();
-        AddInvoke();
-    }
-
 }
 

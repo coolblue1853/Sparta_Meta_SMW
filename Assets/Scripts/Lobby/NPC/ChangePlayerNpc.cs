@@ -8,7 +8,7 @@ public class ChangePlayerNpc : BaseNpc
     SlotDataManager _manager;
     [SerializeField] private int _index;
 
-    private string _adress;
+    [SerializeField] private string _adress;
     private Animator _animator;
 
     private void Awake()
@@ -34,8 +34,11 @@ public class ChangePlayerNpc : BaseNpc
     {
         PlayerController player = LobbyScene.Instance._playerPrefab.GetComponent<PlayerController>();
         string adress = _manager.animatorAddresses[_index];
-        _manager.animatorAddresses[_index] = player.animatorAddresses[0];
-        player.SetAnimator(_animator.runtimeAnimatorController, adress, out RuntimeAnimatorController output);
+
+        player.SetAnimator(_animator.runtimeAnimatorController, adress,
+            out RuntimeAnimatorController output, out string outAdress);
+
+        _manager.animatorAddresses[_index] = outAdress;
         _animator.runtimeAnimatorController = output;
         _manager.Save();
     }

@@ -14205,7 +14205,7 @@ MonoBehaviour:
   _justDirMove: 0
   _cusor: {fileID: 1857727442}
   animatorAddresses:
-  - Assets/Anim/Knight/KnightAnim.controller
+  - Assets/Anim/Lizzard/LizzardAnim.controller
   targetAnimators:
   - {fileID: 1898986551}
 --- !u!114 &1916741296
