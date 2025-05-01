@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Dialogue/NPCDialogue")]
 [System.Serializable]
 public class DialogueEntry
 {
@@ -10,6 +9,7 @@ public class DialogueEntry
     public string text;
 }
 
+[CreateAssetMenu(menuName = "Data/NPCDialogue")]
 public class DialogueData : ScriptableObject
 {
     public string npcId;

@@ -32,14 +32,8 @@ public class ChangePlayerNpc : BaseNpc
     void ChangePlayerAnimator()
     {
         PlayerController player = LobbyScene.Instance._playerPrefab.GetComponent<PlayerController>();
-        var _chagneAnimator = _animator.runtimeAnimatorController;
-        RuntimeAnimatorController temp = _chagneAnimator;
-        _chagneAnimator = player._animator.runtimeAnimatorController;
-
-
-        player.SetAnimator(temp, _adress, out string outAdress);
-        _animator.runtimeAnimatorController = _chagneAnimator;
-        _manager.changePlayerAdress[_index] = outAdress;
+        player.SetAnimator(_animator.runtimeAnimatorController, out RuntimeAnimatorController output);
+        _animator.runtimeAnimatorController = output;
     }
 
 }

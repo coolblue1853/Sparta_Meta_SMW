@@ -170,7 +170,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 3
-  _chagneAnimator: {fileID: 0}
 --- !u!61 &24976251
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -226,7 +225,7 @@ Animator:
   m_GameObject: {fileID: 24976248}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3f5e3c32fecb4d445a4efda82b5c23e9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -420,7 +419,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 1
-  _chagneAnimator: {fileID: 0}
 --- !u!61 &385554187
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -476,7 +474,7 @@ Animator:
   m_GameObject: {fileID: 385554184}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 393b5ed32b34f1d488d4b6846ebec4d6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -587,7 +585,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 2
-  _chagneAnimator: {fileID: 0}
 --- !u!61 &414513760
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -643,7 +640,7 @@ Animator:
   m_GameObject: {fileID: 414513757}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c8c770e47a8a50e4883847d4dc2c1336, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1654,22 +1651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c5a1681e592e34681fd4b9ce217852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slotData: {fileID: 11400000, guid: 7064915e07a55764bb03a5e961beaf0c, type: 2}
-  changePlayerNpcs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  changePlayerAdress:
-  - 
-  - 
-  - 
-  - 
-  changePlayerNpcArr:
-  - {fileID: 1447447723}
-  - {fileID: 385554186}
-  - {fileID: 414513759}
-  - {fileID: 24976250}
 --- !u!1 &1153779581
 GameObject:
   m_ObjectHideFlags: 0
@@ -13390,7 +13371,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 0
-  _chagneAnimator: {fileID: 0}
 --- !u!61 &1447447724
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13446,7 +13426,7 @@ Animator:
   m_GameObject: {fileID: 1447447720}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 96db898fc764dff47af40ce12ec8f5b6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -14124,7 +14104,7 @@ Animator:
   m_GameObject: {fileID: 1898986548}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c8c770e47a8a50e4883847d4dc2c1336, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4beedf0d8dd389341bff2daf67aae4fa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -14199,7 +14179,6 @@ MonoBehaviour:
   _movePower: 5
   _jumpPower: 5
   _gravity: 20
-  _playerData: {fileID: 11400000, guid: 94cc3782765ad6040b6b6bf329c87f41, type: 2}
   _justDirMove: 0
   _cusor: {fileID: 1857727442}
 --- !u!114 &1916741296
@@ -14478,7 +14457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd1120292eedc54fa8abd9a910cf23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dialogueData: {fileID: 11400000, guid: 2f250a94a5ba1474aa8169f92ee224ab, type: 2}
+  _dialogueData: {fileID: 11400000, guid: 178d8e95c5753354192e6b62c5e42346, type: 2}
 --- !u!1 &2090461881
 GameObject:
   m_ObjectHideFlags: 0

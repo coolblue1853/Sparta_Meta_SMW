@@ -90,6 +90,6 @@ public class LobbyScene : MonoBehaviour
     }
     private void OnApplicationQuit()
     {
-        EndGame.Invoke();
+      //  EndGame.Invoke();
     }
 }
