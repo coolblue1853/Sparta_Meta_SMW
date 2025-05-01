@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
 public class PlayerController : BaseController
 {
+    [SerializeField] private PlayerData _playerData; 
+
     [SerializeField]
     private bool _justDirMove = false;
 
@@ -16,10 +19,52 @@ public class PlayerController : BaseController
 
     protected override void Init()
     {
+        PlayerDataLoader.LoadAnimator(_playerData, () =>
+        {
+            // 로드 완료 후 처리 (예: 캐릭터에 적용)
+           _animator.runtimeAnimatorController = _playerData.animatorController;
+        });
+        LobbyScene.EndGame += SavePlayerData;
+
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
             Debug.Log("rb2D가 없습니다!");
     }
+
+    public void SetAnimator(RuntimeAnimatorController controller, string adress, out string outAdress)
+    {
+        outAdress = _playerData.animatorAddress;
+        _animator.runtimeAnimatorController = controller;
+        _playerData.animatorAddress = adress;
+    }
+
+
+    // 데이터 저장, 추후 스크립트 분리 필요
+    public void SavePlayerData()
+    {
+        PlayerData data = _playerData;
+        // PlayerData를 에셋으로 저장하기 전에, 새 인스턴스를 만든 후 저장
+        if (data != null)
+        {
+            string path = "Assets/Resources/Scriptable/Lobby/PlayerData.asset";
+
+            if (AssetDatabase.LoadAssetAtPath<PlayerData>(path) == null)
+            {
+                AssetDatabase.CreateAsset(data, path);
+            }
+            else
+            {
+                EditorUtility.SetDirty(data); // 데이터 변경을 Unity에 알림
+            }
+
+            AssetDatabase.SaveAssets(); // 변경 사항 저장
+        }
+        else
+        {
+            Debug.LogError("PlayerData is null");
+        }
+    }
+
 
 
     // 플레이어 정지
