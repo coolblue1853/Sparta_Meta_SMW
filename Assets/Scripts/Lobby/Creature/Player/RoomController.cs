@@ -13,7 +13,7 @@ public class RoomController : MonoBehaviour
     private Image progressBar;
     private Coroutine currentTriggerCoroutine;
 
-    Camera mainCamera;
+    private Camera mainCamera;
     private void Awake()
     {
         mainCamera = Camera.main;

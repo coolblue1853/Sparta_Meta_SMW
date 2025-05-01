@@ -23,8 +23,6 @@ public class MiniGameNpc : DialogueNpc
             {
                 ShowTextBox(Define.DialogueKey.Close.ToString());
             }
-                
-
         }
     }
 }

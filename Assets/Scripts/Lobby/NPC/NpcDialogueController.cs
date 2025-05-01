@@ -30,7 +30,6 @@ public class NpcDialogueController : MonoBehaviour
         _hideCoroutine = StartCoroutine(HideAfterDelay(_delay));
     }
 
-
     private IEnumerator HideAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);

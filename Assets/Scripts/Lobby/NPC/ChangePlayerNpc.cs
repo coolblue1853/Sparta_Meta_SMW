@@ -15,7 +15,6 @@ public class ChangePlayerNpc : BaseNpc
     {
         _manager = GetComponentInParent<SlotDataManager>();
         _animator = GetComponent<Animator>();
-
     }
 
     public void ChangeAnimator(RuntimeAnimatorController controller, string adress)
