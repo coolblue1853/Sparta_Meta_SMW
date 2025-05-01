@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,7 +9,6 @@ using UnityEngine.Windows;
 
 public class PlayerController : BaseController
 {
-
     [SerializeField]
     private bool _justDirMove = false;
 
@@ -16,19 +16,35 @@ public class PlayerController : BaseController
     private GameObject _cusor;
     private Vector2 _cusorOffset = new Vector2(-0.1f, -0.25f);
 
+    public List<string> animatorAddresses;
+    public List<Animator> targetAnimators;
+    private Action onEndGameSave;
+    private Action onMoveSceneSave;
+    private string savePath => Application.persistentDataPath + "/Player.json";
     protected override void Init()
     {
-
+        AddInvoke();
 
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
             Debug.Log("rb2D가 없습니다!");
     }
+    private void OnEnable()
+    {
+        DataManager.instance.Load(targetAnimators, savePath);
+    }
 
-    public void SetAnimator(RuntimeAnimatorController controller, out RuntimeAnimatorController output)
+    private void OnDisable()
+    {
+        DeleteInvoke();
+    }
+
+    public void SetAnimator(RuntimeAnimatorController controller,string adress, out RuntimeAnimatorController output)
     {
         output = _animator.runtimeAnimatorController;
         _animator.runtimeAnimatorController = controller;
+        animatorAddresses[0] = adress;
+        DataManager.instance.Save(animatorAddresses, savePath);
     }
 
 
@@ -145,6 +161,26 @@ public class PlayerController : BaseController
     {
         State = Define.State.Idle;
         _rigidbody.velocity = Vector3.zero;
+    }
+
+    void AddInvoke()
+    {
+        onEndGameSave = () => DataManager.instance.Save(animatorAddresses, savePath);
+        onMoveSceneSave = () => DataManager.instance.Save(animatorAddresses, savePath);
+
+        LobbyScene.EndGameSave += onEndGameSave;
+        LobbyScene.MoveSceneSave += onMoveSceneSave;
+    }
+    void DeleteInvoke()
+    {
+        LobbyScene.EndGameSave -= onEndGameSave;
+        LobbyScene.MoveSceneSave -= onMoveSceneSave;
+    }
+
+    public void ResetInvoke()
+    {
+        DeleteInvoke();
+        AddInvoke();
     }
 
 }

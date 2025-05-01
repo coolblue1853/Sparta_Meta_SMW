@@ -335,6 +335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 349069218}
   - component: {fileID: 349069219}
+  - component: {fileID: 349069220}
   m_Layer: 0
   m_Name: '@LobbyScene'
   m_TagString: Untagged
@@ -371,6 +372,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 1916741293}
   _showResult: 0
+--- !u!114 &349069220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349069217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39e71d4b2b4056c469b0f4dfbbb31408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &385554184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,6 +1664,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c5a1681e592e34681fd4b9ce217852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetAnimators:
+  - {fileID: 1447447725}
+  - {fileID: 385554188}
+  - {fileID: 414513761}
+  - {fileID: 24976252}
+  animatorAddresses:
+  - Assets/Anim/Lizzard/LizzardAnim.controller
+  - Assets/Anim/Wizzard/Wizzard.controller
+  - Assets/Anim/Dwarf/DwarfAnim.controller
+  - Assets/Anim/Elf/ElfAnim.controller
 --- !u!1 &1153779581
 GameObject:
   m_ObjectHideFlags: 0
@@ -14181,6 +14204,10 @@ MonoBehaviour:
   _gravity: 20
   _justDirMove: 0
   _cusor: {fileID: 1857727442}
+  animatorAddresses:
+  - Assets/Anim/Knight/KnightAnim.controller
+  targetAnimators:
+  - {fileID: 1898986551}
 --- !u!114 &1916741296
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@ public class Door : MonoBehaviour, ITimeTriggerable
     // 콜백으로 호출되는 메서드
     public void OnTriggerTimeComplete()
     {
+        LobbyScene.Instance.LoadSceneSave();
         SceneManager.LoadScene(_targetScene);
     }
 }

@@ -11,8 +11,8 @@ public class LobbyScene : MonoBehaviour
     public GameObject _playerPrefab;
     // 점수를 갱신하는 옵저버
     public static event Action OnScoreUpdate;
-    public static event Action MoveScene;
-    public static event Action EndGame;
+    public static event Action MoveSceneSave;
+    public static event Action EndGameSave;
     public int _showResult;
 
 
@@ -88,8 +88,13 @@ public class LobbyScene : MonoBehaviour
             PlayerPrefs.DeleteKey("HighScore");
         }
     }
+
+    public void LoadSceneSave()
+    {
+      //  MoveSceneSave?.Invoke();
+    }
     private void OnApplicationQuit()
     {
-      //  EndGame.Invoke();
+  //      EndGameSave?.Invoke();
     }
 }

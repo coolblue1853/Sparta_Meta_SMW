@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,8 +33,11 @@ public class ChangePlayerNpc : BaseNpc
     void ChangePlayerAnimator()
     {
         PlayerController player = LobbyScene.Instance._playerPrefab.GetComponent<PlayerController>();
-        player.SetAnimator(_animator.runtimeAnimatorController, out RuntimeAnimatorController output);
+        string adress = _manager.animatorAddresses[_index];
+        _manager.animatorAddresses[_index] = player.animatorAddresses[0];
+        player.SetAnimator(_animator.runtimeAnimatorController, adress, out RuntimeAnimatorController output);
         _animator.runtimeAnimatorController = output;
+        _manager.Save();
     }
 
 }
