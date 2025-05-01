@@ -8,6 +8,7 @@ TagManager:
   - BackGround
   - Obstacle
   - Hole
+  - PlayerRange
   layers:
   - Default
   - TransparentFX

@@ -31,4 +31,12 @@ public class Define
         LeftUp,
         LeftUpDown,
     }
+    public enum DialogueKey
+    {
+        Close,
+        Click,
+        FailBest,
+        SuccBest,
+     
+    }
 }

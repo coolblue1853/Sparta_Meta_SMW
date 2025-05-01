@@ -62,7 +62,7 @@ public class ProjectileController : MonoBehaviour
         else if (rangeWeaponHandler.target.value == (rangeWeaponHandler.target.value | (1 << collision.gameObject.layer)))
         {
             //npc 상호작용
-            var npcController = collision.GetComponent<NPCController>();
+            var npcController = collision.GetComponent<BaseNpc>();
             if(npcController != null)
             {
                 npcController.InteractiveNPC();

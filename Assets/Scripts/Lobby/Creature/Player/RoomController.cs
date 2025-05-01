@@ -57,8 +57,8 @@ public class RoomController : MonoBehaviour
         barUi.SetActive(false);
         target.OnTriggerTimeComplete();
 
-        Vector3 playerPositon = transform.position + pivot;
-        PlayerPrefs.SetString("PlayerPosition", $"{transform.position.x},{playerPositon.y},{playerPositon.z}");
+        Vector3 playerPositon = pivot;
+        PlayerPrefs.SetString("PlayerPosition", $"{playerPositon.x},{playerPositon.y},{playerPositon.z}");
         PlayerPrefs.SetString("CameraPosition", $"{mainCamera.transform.position.x},{mainCamera.transform.position.y},{mainCamera.transform.position.z}");
     }
 

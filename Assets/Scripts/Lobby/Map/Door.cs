@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-
 public class Door : MonoBehaviour, ITimeTriggerable
 {
     [SerializeField]
@@ -11,18 +9,13 @@ public class Door : MonoBehaviour, ITimeTriggerable
     [SerializeField]
     private float _waitTime = 1.0f;
     [SerializeField]
-    private Vector3 _pivot;
-
-
-
-
+    private Transform _pivot;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             RoomController controller = collision.GetComponent<RoomController>();
-            controller.StartTriggerCountdown(this,_waitTime, _pivot);
-
+            controller.StartTriggerCountdown(this,_waitTime, _pivot.position);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
