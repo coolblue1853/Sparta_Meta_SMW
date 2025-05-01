@@ -9,7 +9,6 @@ public class ScoreBoard : MonoBehaviour
     private string _scoreName;
     [SerializeField]
     private TextMeshProUGUI _scoreTxt;
-
     private void Awake()
     {
         LobbyScene.OnScoreUpdate += UpdateScoreBoard;

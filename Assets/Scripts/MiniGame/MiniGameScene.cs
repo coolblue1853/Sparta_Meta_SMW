@@ -59,9 +59,15 @@ public class MiniGameScene : MonoBehaviour
         if(_highScore < _currentScore)
         {
             PlayerPrefs.SetInt("HighScore", _currentScore);
+            PlayerPrefs.SetInt("IsHighScore", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("IsHighScore", 0);
         }
 
         _state = MiniGameState.End;
+        PlayerPrefs.SetString("PrevScene", SceneManager.GetActiveScene().name);
         Invoke("LobbyInvoke", 1f);
     }
     void LobbyInvoke()

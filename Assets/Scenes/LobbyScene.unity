@@ -13571,8 +13571,8 @@ GameObject:
   - component: {fileID: 2085360316}
   - component: {fileID: 2085360315}
   - component: {fileID: 2085360317}
-  - component: {fileID: 2085360319}
   - component: {fileID: 2085360318}
+  - component: {fileID: 2085360319}
   m_Layer: 8
   m_Name: MiniGameNPC
   m_TagString: NPC
@@ -13717,7 +13717,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2085360314}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 742ae68715eabaa4897681fa96cef6bc, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cd1120292eedc54fa8abd9a910cf23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dialogueData: {fileID: 11400000, guid: 2f250a94a5ba1474aa8169f92ee224ab, type: 2}

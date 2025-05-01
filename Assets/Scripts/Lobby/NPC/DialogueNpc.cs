@@ -20,13 +20,6 @@ public class DialogueNpc : BaseNpc
         ShowTextBox(Define.DialogueKey.Click.ToString());
     }
     //근처 상호작용 UI
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("PlayerRange"))
-        {
-            ShowTextBox(Define.DialogueKey.Close.ToString());
-        }
-    }
     public void ShowTextBox(string key)
     {
         _dialogueController.ShowText(GetDialogueByKey(key));
