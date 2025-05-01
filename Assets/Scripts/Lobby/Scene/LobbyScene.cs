@@ -11,10 +11,7 @@ public class LobbyScene : MonoBehaviour
     public GameObject _playerPrefab;
     // 점수를 갱신하는 옵저버
     public static event Action OnScoreUpdate;
-    public static event Action MoveScene;
-    public static event Action EndGame;
     public int _showResult;
-
 
     private void Awake()
     {
@@ -75,11 +72,6 @@ public class LobbyScene : MonoBehaviour
         obj.transform.position = loadedPosition;
     }
 
-    // 게임이 꺼질때 발동해야 하는 함수
-
-    // 씬이 로드될때 발동해야 하는 함수
-
-
     //테스트용
     private void Update()
     {
@@ -87,9 +79,5 @@ public class LobbyScene : MonoBehaviour
         {
             PlayerPrefs.DeleteKey("HighScore");
         }
-    }
-    private void OnApplicationQuit()
-    {
-        EndGame.Invoke();
     }
 }
