@@ -8,6 +8,8 @@ public abstract class BaseController : MonoBehaviour
     [SerializeField]
     protected SpriteRenderer _spriteRenderer;
     protected Rigidbody2D _rigidbody;
+    [SerializeField]
+    Animator _anim;
 
     [Header("Define")]
     [SerializeField]
@@ -64,19 +66,18 @@ public abstract class BaseController : MonoBehaviour
         set
         {
             _state = value;
-            Animator anim = GetComponent<Animator>();
             switch (_state)
             {
                 case Define.State.Die:
                     break;
                 case Define.State.Idle:
-                  //  anim.CrossFade("Wait", 0.1f);
+                    _anim.CrossFade("Idle", 0.1f);
                     break;
                 case Define.State.Moving:
-                    //anim.CrossFade("Run", 0.1f);
+                    _anim.CrossFade("Run", 0.1f);
                     break;
                 case Define.State.Skill:
-                  //  anim.CrossFade("Attack", 0.1f, -1, 0);
+                    _anim.CrossFade("Attack", 0.1f, -1, 0);
                     break;
             }
         }
@@ -87,13 +88,13 @@ public abstract class BaseController : MonoBehaviour
         switch (State)
         {
             case Define.State.Die:
-               // UpdateDie();
+                // UpdateDie();
                 break;
             case Define.State.Idle:
                 UpdateIdle();
                 break;
             case Define.State.Skill:
-              //  UpdateSkill();
+                //  UpdateSkill();
                 break;
 
         }
@@ -139,9 +140,9 @@ public abstract class BaseController : MonoBehaviour
     }
     protected abstract void Init();
 
-   // protected virtual void UpdateDie() { }
+    // protected virtual void UpdateDie() { }
     protected virtual void UpdateMoving() { }
     protected virtual void UpdateIdle() { }
     protected virtual void UpdateJump() { }
-  //  protected virtual void UpdateSkill() { }
+    //  protected virtual void UpdateSkill() { }
 }

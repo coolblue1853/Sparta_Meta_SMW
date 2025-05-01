@@ -57,7 +57,7 @@ public class PlayerController : BaseController
                 _spriteRenderer.flipX = true;
 
             if (!_justDirMove)
-                _state = Define.State.Moving;
+                State = Define.State.Moving;
         }
         else
         {
@@ -85,6 +85,7 @@ public class PlayerController : BaseController
     {
         if (_isGrounded)
         {
+            State = Define.State.Jump;
             _verticalSpeed = _jumpPower;
             _isGrounded = false;
             UpdateJump();
@@ -98,7 +99,7 @@ public class PlayerController : BaseController
             _verticalSpeed -= _gravity* Time.deltaTime;
             _height += _verticalSpeed * Time.deltaTime;
 
-            if(_height <= 0f)
+            if (_height <= 0.01f) // ¿©À¯¸¦ ÁÜ
             {
                 _height = 0f;
                 _verticalSpeed = 0f;
@@ -124,7 +125,7 @@ public class PlayerController : BaseController
             _justDirMove = false;
             if (_moveDir != Vector2.zero)
             {
-                _state = Define.State.Moving;
+                State = Define.State.Moving;
             }
         }
 
@@ -132,7 +133,7 @@ public class PlayerController : BaseController
 
     void SetIdle()
     {
-        _state = Define.State.Idle;
+        State = Define.State.Idle;
         _rigidbody.velocity = Vector3.zero;
     }
 
