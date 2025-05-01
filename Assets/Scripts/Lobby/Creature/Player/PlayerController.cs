@@ -9,6 +9,7 @@ using UnityEngine.Windows;
 
 public class PlayerController : BaseController
 {
+    PlayerStatHandler _statHandler;
     [SerializeField] private bool _justDirMove = false;
     [SerializeField] private GameObject _cusor;
 
@@ -19,6 +20,7 @@ public class PlayerController : BaseController
     private string savePath => Application.persistentDataPath + "/Player.json";
     protected override void Init()
     {
+        _statHandler = GetComponent<PlayerStatHandler>();
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
             Debug.Log("rb2D가 없습니다!");
@@ -51,7 +53,7 @@ public class PlayerController : BaseController
         base.UpdateMoving();
 
         // 방향에 따른 이동 조작
-        _rigidbody.velocity = _moveDir * _movePower;
+        _rigidbody.velocity = _moveDir * _statHandler.Speed;
     }
 
     void OnAttack(InputValue inputValue)
@@ -63,7 +65,7 @@ public class PlayerController : BaseController
     {
         if (!_isGrounded)
         {
-            _verticalSpeed -= _gravity * Time.deltaTime;
+            _verticalSpeed -= _statHandler.Gravity * Time.deltaTime;
             _height += _verticalSpeed * Time.deltaTime;
 
             if (_height <= 0.01f) // 여유를 줌
@@ -108,7 +110,7 @@ public class PlayerController : BaseController
         if (_isGrounded)
         {
             State = Define.State.Jump;
-            _verticalSpeed = _jumpPower;
+            _verticalSpeed = _statHandler.JumpPower;
             _isGrounded = false;
             UpdateJump();
         }

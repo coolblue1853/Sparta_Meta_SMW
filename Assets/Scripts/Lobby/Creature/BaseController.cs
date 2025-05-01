@@ -34,20 +34,13 @@ public abstract class BaseController : MonoBehaviour
     protected bool _isCanAttack = true;
 
     [Header("Stat Info")]
-    // 이동 관련 변수 - 추후 스탯으로 넘겨야함
-    [SerializeField]
-    protected float _movePower = 0f;
     // 점프 관련 변수 - 추후 스탯으로 넘겨야함
     protected float _height = 0f;
-    [SerializeField]
-    protected float _jumpPower = 0f;
     protected float _verticalSpeed = 0f;
-    [SerializeField]
-    protected float _gravity = 0f;
     protected bool _isGrounded = true;
 
 
-    private void Awake()
+    private void Start()
     {
         Init();
 
@@ -92,11 +85,13 @@ public abstract class BaseController : MonoBehaviour
                 UpdateIdle();
                 break;
             case Define.State.Skill:
-                //  UpdateSkill();
+                UpdateSkill();
                 break;
 
         }
 
+        // 이건 나중에 플레이어컨트롤러로 이동
+        // 업데이트도 버츄얼로 변경후 오버라이드
         HandleAttackDelay();
     }
 
@@ -114,7 +109,7 @@ public abstract class BaseController : MonoBehaviour
     }
 
 
-    private void HandleAttackDelay()
+    protected void HandleAttackDelay()
     {
         if (_weaponHandler == null)
             return;
@@ -142,5 +137,5 @@ public abstract class BaseController : MonoBehaviour
     protected virtual void UpdateMoving() { }
     protected virtual void UpdateIdle() { }
     protected virtual void UpdateJump() { }
-    //  protected virtual void UpdateSkill() { }
+    protected virtual void UpdateSkill() { }
 }
