@@ -8,8 +8,8 @@ public abstract class BaseController : MonoBehaviour
     [SerializeField]
     protected SpriteRenderer _spriteRenderer;
     protected Rigidbody2D _rigidbody;
-    [SerializeField]
-    Animator _anim;
+
+    public Animator _animator;
 
     [Header("Define")]
     [SerializeField]
@@ -56,8 +56,6 @@ public abstract class BaseController : MonoBehaviour
             _weaponHandler = Instantiate(_WeaponPrefab, this.transform);
             _weaponHandler.transform.position = _weaponPivot.position;
         }
-
-
     }
 
     public virtual Define.State State
@@ -71,13 +69,13 @@ public abstract class BaseController : MonoBehaviour
                 case Define.State.Die:
                     break;
                 case Define.State.Idle:
-                    _anim.CrossFade("Idle", 0.1f);
+                    _animator.CrossFade("Idle", 0.1f);
                     break;
                 case Define.State.Moving:
-                    _anim.CrossFade("Run", 0.1f);
+                    _animator.CrossFade("Run", 0.1f);
                     break;
                 case Define.State.Skill:
-                    _anim.CrossFade("Attack", 0.1f, -1, 0);
+                    _animator.CrossFade("Attack", 0.1f, -1, 0);
                     break;
             }
         }
