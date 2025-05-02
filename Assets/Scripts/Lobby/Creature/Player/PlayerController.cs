@@ -71,11 +71,12 @@ public class PlayerController : BaseController
             _verticalSpeed -= _statHandler.Gravity * Time.deltaTime;
             _height += _verticalSpeed * Time.deltaTime;
 
-            if (_height <= 0.01f) // 여유를 줌
+            if (_height <= 0.02f) // 여유를 줌
             {
                 _height = 0f;
                 _verticalSpeed = 0f;
                 _isGrounded = true;
+                State = Define.State.Moving;
             }
         }
 
@@ -123,7 +124,7 @@ public class PlayerController : BaseController
             State = Define.State.Jump;
             _verticalSpeed = _statHandler.JumpPower;
             _isGrounded = false;
-            UpdateJump();
+           // UpdateJump();
         }
     }
     // 쉬프트를 이용한 방향 전환
