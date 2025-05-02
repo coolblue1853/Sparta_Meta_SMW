@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LogueGameScene : MonoBehaviour
@@ -48,8 +49,6 @@ public class LogueGameScene : MonoBehaviour
             }
         }
     }
-    // 게임 시작
-    // 라운드 초기화
     public void StartLogueGame()
     {
         roundCount = 1;
@@ -63,6 +62,11 @@ public class LogueGameScene : MonoBehaviour
             case Define.RogueState.InRound:
                 UpdateInRound();
                 break;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            PlayerPrefs.SetInt("RogueBest", roundCount);
         }
     }
 
@@ -89,22 +93,26 @@ public class LogueGameScene : MonoBehaviour
         _closeDoorMap.SetActive(false);
         _openDoorMap.SetActive(true);
 
-
         result = Instantiate(_resultArr[Random.Range(0, _resultArr.Length)]);
         result.transform.position = _resultPivot.transform.position;
         roundCount++;
     }
     private void UpdateEnd()
     {
+        if (PlayerPrefs.GetInt("RogueBest", 0) < roundCount)
+        {
+            PlayerPrefs.SetInt("RogueBest", roundCount);
+            LobbyScene.Instance._showRougeResult = 1;
+        }
+        else
+        {
+            LobbyScene.Instance._showRougeResult = 0;
+        }
+
+        roundCount = 0;
+        LobbyScene.Instance.UpdateScore();
         _roundManager.EndGame();
     }
 
 
-
-    // 게임 진행도중
-    // 맵 문닫기 -> 맵 라운드 소환, -> 다 잡으면 보상을 주고 방이 열림 -> 방에서 이동하면 다음 라운드 시작.
-
-
-    // 게임 끝
-    //스탯 초기화
 }

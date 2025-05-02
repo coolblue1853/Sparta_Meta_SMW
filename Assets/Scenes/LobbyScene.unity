@@ -4262,6 +4262,7 @@ MonoBehaviour:
   LogueGameScene: {fileID: 1576291596}
   _playerPrefab: {fileID: 1916741295}
   _showResult: 0
+  _showRougeResult: 0
   baseMap: {fileID: 422615773}
   originPivot: {fileID: 1046690784}
   weaponArr:
@@ -6072,7 +6073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355a1a766871f5340b794e824d5b7462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scoreName: HighScore
+  _scoreName: RogueBest
   _scoreTxt: {fileID: 1351103720}
 --- !u!1 &996347449
 GameObject:
@@ -24348,7 +24349,7 @@ GameObject:
   - component: {fileID: 2065144119}
   - component: {fileID: 2065144118}
   - component: {fileID: 2065144117}
-  - component: {fileID: 2065144116}
+  - component: {fileID: 2065144120}
   m_Layer: 8
   m_Name: RogueNPC
   m_TagString: NPC
@@ -24372,19 +24373,6 @@ Transform:
   - {fileID: 732562688}
   m_Father: {fileID: 1460283398}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2065144116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2065144114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cd1120292eedc54fa8abd9a910cf23b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _dialogueData: {fileID: 11400000, guid: 178d8e95c5753354192e6b62c5e42346, type: 2}
 --- !u!114 &2065144117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24497,6 +24485,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2065144120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065144114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4a4636af6d0a548aeb77bc471b1f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dialogueData: {fileID: 11400000, guid: 9884f9394f4052549833a2892d70f63d, type: 2}
 --- !u!1 &2075493493
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ public class LobbyScene : MonoBehaviour
     public static event Action MoveSceneSave;
     public static event Action EndGameSave;
     public int _showResult;
+    public int _showRougeResult;
 
     public GameObject baseMap;
     [SerializeField] private GameObject originPivot;
@@ -24,15 +25,13 @@ public class LobbyScene : MonoBehaviour
     private void Awake()
     {
         _playerPrefab.CreatWeapon(weaponArr[0]);
+        _showRougeResult = -1;
         if (Instance == null)
         {
             Instance = this;
         }
     }
-    private void OnEnable()
-    {
 
-    }
     private void Start()
     {
         Init();
