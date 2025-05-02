@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BaseNpc : MonoBehaviour
 {
+
+
     // 상호작용, npc마다 상호작용은 달라질 수 있음.
     public virtual void InteractiveNPC()
     {

@@ -12,5 +12,7 @@ public abstract class Result : MonoBehaviour
             Destroy(this.gameObject);
         }  
     }
+
     protected abstract void GetResult(Collider2D collision);
+
 }

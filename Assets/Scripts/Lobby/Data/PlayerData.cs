@@ -3,11 +3,11 @@ using System.Collections.Generic;
 [System.Serializable]
 public class AnimatorSaveData
 {
-    public string AnimatorAddress;
+    public string animatorAddress;
 }
 
 [System.Serializable]
 public class AnimatorSaveDataList
 {
-    public List<AnimatorSaveData> Animators = new List<AnimatorSaveData>();
+    public List<AnimatorSaveData> animators = new List<AnimatorSaveData>();
 }

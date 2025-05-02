@@ -3,16 +3,16 @@ using UnityEngine;
 public class EnemyController : BaseController
 {
     private RoundManager _roundManager;
-    private EnemyStatHandler _statHandler;
-    private Transform _target;
+    EnemyStatHandler _statHandler;
+    private Transform target;
 
     [SerializeField] private WeaponHandler _enemyWeaponHandler;
-    [SerializeField] private float _followRange = 1f;
+    [SerializeField] private float followRange = 1f;
     protected override void Init()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _statHandler = GetComponent<EnemyStatHandler>();
-        _target = LobbyScene.Instance.PlayerPrefab.transform;
+        this.target = LobbyScene.Instance._playerPrefab.transform;
         _state = Define.State.Moving;
         CreatWeapon(_enemyWeaponHandler);
     }
@@ -27,7 +27,7 @@ public class EnemyController : BaseController
         float distance = DistanceToTarget();
         Vector2 direction = DirectionToTarget();
 
-        if (distance <= _followRange) // 근접했다면 공격하기
+        if (distance <= followRange) // 근접했다면 공격하기
         {
             _state = Define.State.Skill;
             _rigidbody.velocity = Vector2.zero;
@@ -42,7 +42,7 @@ public class EnemyController : BaseController
     protected override void UpdateSkill()
     {
         float distance = DistanceToTarget();
-        if (distance <= _followRange)
+        if (distance <= followRange)
         {
             _attackDir = DirectionToTarget();
 
@@ -81,10 +81,10 @@ public class EnemyController : BaseController
     }
     protected float DistanceToTarget()
     {
-        return Vector3.Distance(transform.position, _target.position);
+        return Vector3.Distance(transform.position, target.position);
     }
     protected Vector2 DirectionToTarget()
     {
-        return (_target.position - transform.position).normalized;
+        return (target.position - transform.position).normalized;
     }
 }

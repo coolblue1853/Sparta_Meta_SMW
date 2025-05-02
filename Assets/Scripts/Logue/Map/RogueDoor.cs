@@ -5,8 +5,10 @@ using UnityEngine;
 public class RogueDoor : MonoBehaviour, ITimeTriggerable
 {
 
-    [SerializeField] private float _waitTime = 1.0f;
-    [SerializeField] private Transform _pivot;
+    [SerializeField]
+    private float _waitTime = 1.0f;
+    [SerializeField]
+    private Transform _pivot;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -28,7 +30,7 @@ public class RogueDoor : MonoBehaviour, ITimeTriggerable
     public void OnTriggerTimeComplete()
     {
         Camera.main.transform.position = _pivot.transform.position;
-        LobbyScene.Instance.PlayerPrefab.transform.position = _pivot.transform.position;
-        LogueGameScene.Instance.State = Define.RogueState.Start;
+        LobbyScene.Instance._playerPrefab.transform.position = _pivot.transform.position;
+        LogueGameScene.instance.State = Define.RogueState.Start;
     }
 }

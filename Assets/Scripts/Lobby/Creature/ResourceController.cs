@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class ResourceController : MonoBehaviour
 {
-    [SerializeField] private float _healthChangeDelay = .5f;
+    [SerializeField] private float healthChangeDelay = .5f;
 
-    private BaseController _baseController;
-    private StatHandler _statHandler;
+    private BaseController baseController;
+    private StatHandler statHandler;
 
-    private float _timeSinceLastChange = float.MaxValue;
+    private float timeSinceLastChange = float.MaxValue;
 
     public float CurrentHealth { get; private set; }
     public float MaxHealth { get; private set; }
@@ -15,10 +15,10 @@ public class ResourceController : MonoBehaviour
 
     private void Awake()
     {
-        _statHandler = GetComponent<StatHandler>();
-        _baseController = GetComponent<BaseController>();
-        MaxHealth = _statHandler.Health;
-        MoveSpeed = _statHandler.Speed;
+        statHandler = GetComponent<StatHandler>();
+        baseController = GetComponent<BaseController>();
+        MaxHealth = statHandler.Health;
+        MoveSpeed = statHandler.Speed;
     }
 
     private void Start()
@@ -28,31 +28,42 @@ public class ResourceController : MonoBehaviour
 
     private void Update()
     {
-        if (_timeSinceLastChange < _healthChangeDelay)
+        if (timeSinceLastChange < healthChangeDelay)
         {
-            _timeSinceLastChange += Time.deltaTime;
+            timeSinceLastChange += Time.deltaTime;
+            if (timeSinceLastChange >= healthChangeDelay)
+            {
+             //   animationHandler.InvincibilityEnd();
+            }
         }
     }
     public void ResetResource()
     {
-        CurrentHealth = _statHandler.Health;
-        MoveSpeed = _statHandler.Speed;
+        CurrentHealth = statHandler.Health;
+        MoveSpeed = statHandler.Speed;
     }
     public bool ChangeHealth(float change)
     {
-        if (change == 0 || _timeSinceLastChange < _healthChangeDelay)
+        if (change == 0 || timeSinceLastChange < healthChangeDelay)
         {
             return false;
         }
 
-        _timeSinceLastChange = 0f;
+        timeSinceLastChange = 0f;
         CurrentHealth += change;
         CurrentHealth = CurrentHealth > MaxHealth ? MaxHealth : CurrentHealth;
         CurrentHealth = CurrentHealth < 0 ? 0 : CurrentHealth;
 
+
+        if (change < 0)
+        {
+            //danimationHandler.Damage();
+
+        }
+
         if (CurrentHealth <= 0f)
         {
-            _baseController.State = Define.State.Die;
+            baseController.State = Define.State.Die;
         }
 
         return true;

@@ -4,14 +4,14 @@ using UnityEngine;
 [System.Serializable]
 public class DialogueEntry
 {
-    public string Key;
+    public string key;
     [TextArea]
-    public string Text;
+    public string text;
 }
 
 [CreateAssetMenu(menuName = "Data/NPCDialogue")]
 public class DialogueData : ScriptableObject
 {
-    public string NpcId;
-    public List<DialogueEntry> Data;
+    public string npcId;
+    public List<DialogueEntry> data;
 }
