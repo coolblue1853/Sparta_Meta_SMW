@@ -26,8 +26,10 @@ public abstract class BaseController : MonoBehaviour
 
 
     [Header("Weapon Info")]
-    [SerializeField] public WeaponHandler _WeaponPrefab;
-    [SerializeField] protected WeaponHandler _weaponHandler;
+    //[SerializeField] public WeaponHandler _WeaponPrefab;
+    [SerializeField] public WeaponHandler _weaponHandler;
+    [SerializeField] protected SpriteRenderer _weaponRnderer;
+
     [SerializeField]
     private Transform _weaponPivot;
     protected Vector2 _attackDir = Vector2.right;
@@ -47,14 +49,19 @@ public abstract class BaseController : MonoBehaviour
     private void Start()
     {
         Init();
-
         _resourceController = GetComponent<ResourceController>();
-
-        if (_WeaponPrefab != null)
+    }
+    public void CreatWeapon(WeaponHandler _WeaponPrefab)
+    {
+        if (_weaponHandler != null)
         {
-            _weaponHandler = Instantiate(_WeaponPrefab, this.transform);
-            _weaponHandler.transform.position = _weaponPivot.position;
+            Destroy(_weaponHandler.gameObject);
         }
+        _weaponHandler = Instantiate(_WeaponPrefab, _spriteRenderer.transform);
+        _weaponRnderer = _weaponHandler.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        _weaponHandler.transform.parent = _weaponRnderer.transform;
+        _weaponHandler.transform.position = _weaponPivot.position;
+
     }
 
     public virtual Define.State State

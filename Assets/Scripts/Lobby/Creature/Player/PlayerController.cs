@@ -17,9 +17,11 @@ public class PlayerController : BaseController
 
     [SerializeField] private string[] animatorAddresses;
     [SerializeField] private Animator[] targetAnimators;
+
     private string savePath => Application.persistentDataPath + "/Player.json";
     protected override void Init()
     {
+
         _statHandler = GetComponent<PlayerStatHandler>();
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
@@ -27,6 +29,7 @@ public class PlayerController : BaseController
     }
     private void OnEnable()
     {
+
         animatorAddresses = DataManager.instance.Load(targetAnimators, savePath);
     }
 
@@ -53,7 +56,7 @@ public class PlayerController : BaseController
         base.UpdateMoving();
 
         // 방향에 따른 이동 조작
-        _rigidbody.velocity = _moveDir * _statHandler.Speed;
+        _rigidbody.velocity = _moveDir * _resourceController.MoveSpeed;
     }
 
     void OnAttack(InputValue inputValue)
@@ -89,9 +92,17 @@ public class PlayerController : BaseController
             ChangeCusor(input);
             _attackDir = input;
             if (input.x > 0)
+            {
                 _spriteRenderer.flipX = false;
+                _weaponRnderer.flipX = false;
+            }
+
             if (input.x < 0)
+            {
                 _spriteRenderer.flipX = true;
+                _weaponRnderer.flipX = true;
+            }
+
 
             if (!_justDirMove)
                 State = Define.State.Moving;

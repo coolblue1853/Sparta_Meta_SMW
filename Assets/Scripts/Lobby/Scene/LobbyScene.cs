@@ -9,7 +9,7 @@ public class LobbyScene : MonoBehaviour
     public static LobbyScene Instance;
     public LogueGameScene LogueGameScene;
     // 추후 프리팹으로 된 플레이어 생성
-    public GameObject _playerPrefab;
+    public PlayerController _playerPrefab;
     // 점수를 갱신하는 옵저버
     public static event Action OnScoreUpdate;
     public static event Action MoveSceneSave;
@@ -19,15 +19,20 @@ public class LobbyScene : MonoBehaviour
     public GameObject baseMap;
     [SerializeField] private GameObject originPivot;
 
+    public WeaponHandler[] weaponArr;
+
     private void Awake()
     {
-        if(Instance == null)
+        _playerPrefab.CreatWeapon(weaponArr[0]);
+        if (Instance == null)
         {
             Instance = this;
         }
+    }
+    private void OnEnable()
+    {
 
     }
-
     private void Start()
     {
         Init();
@@ -76,15 +81,21 @@ public class LobbyScene : MonoBehaviour
 
     public void StartLogueGame(Transform transform)
     {
+        _playerPrefab.CreatWeapon(weaponArr[1]);
         Camera.main.transform.position = transform.position;
         _playerPrefab.transform.position = transform.position;
+        LogueGameScene.StartLogueGame();
     }
+
+
     public void EndLogueGame()
     {
+        _playerPrefab.CreatWeapon(weaponArr[0]);
         CameraManager cameraManager = Camera.main.GetComponent<CameraManager>();
         cameraManager.ChangePivot(baseMap);
         Camera.main.transform.position = originPivot.transform.position;
         _playerPrefab.transform.position = originPivot.transform.position;
+        LogueGameScene.State = Define.RogueState.End;
     }
 
     //테스트용

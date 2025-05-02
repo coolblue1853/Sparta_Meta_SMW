@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class EnemyController : BaseController
 {
+    private RoundManager _roundManager;
     EnemyStatHandler _statHandler;
     private Transform target;
 
+    [SerializeField] private WeaponHandler _enemyWeaponHandler;
     [SerializeField] private float followRange = 1f;
     protected override void Init()
     {
@@ -12,7 +14,13 @@ public class EnemyController : BaseController
         _statHandler = GetComponent<EnemyStatHandler>();
         this.target = LobbyScene.Instance._playerPrefab.transform;
         _state = Define.State.Moving;
+        CreatWeapon(_enemyWeaponHandler);
     }
+    public void SetRoundManager(RoundManager roundManager)
+    {
+        _roundManager = roundManager;
+    }
+
     protected override void UpdateMoving()
     {
         base.UpdateMoving();
@@ -26,6 +34,7 @@ public class EnemyController : BaseController
         }
         else
         {
+            ChangeDir(direction);
             _rigidbody.velocity = direction * _statHandler.Speed;
         }
     }
@@ -35,8 +44,10 @@ public class EnemyController : BaseController
         float distance = DistanceToTarget();
         if (distance <= followRange)
         {
-            _attackDir = DirectionToTarget();  // 공격 방향 설정
-            _isAttacking = true;               // 공격 요청 (딜레이 체크는 HandleAttackDelay에서 함)
+            _attackDir = DirectionToTarget();
+
+            ChangeDir(_attackDir);
+            _isAttacking = true;               
             _rigidbody.velocity = Vector2.zero;
         }
         else
@@ -45,9 +56,26 @@ public class EnemyController : BaseController
             _state = Define.State.Moving;
         }
     }
+
+    void ChangeDir(Vector2 input)
+    {
+        if (input.x > 0)
+        {
+            _spriteRenderer.flipX = false;
+            _weaponRnderer.flipX = false;
+        }
+
+        if (input.x < 0)
+        {
+            _spriteRenderer.flipX = true;
+            _weaponRnderer.flipX = true;
+        }
+    }
+
     protected override void UpdateDie()
     {
         base.UpdateDie();
+        _roundManager?.RemoveEnemy(this);
         //가능하다면 오브젝트 풀링 적용
         Destroy(gameObject);
     }

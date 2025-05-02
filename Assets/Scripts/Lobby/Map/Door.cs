@@ -40,7 +40,7 @@ public class Door : MonoBehaviour, ITimeTriggerable
     }
 
     // 콜백으로 호출되는 메서드
-    public void OnTriggerTimeComplete()
+    public  void OnTriggerTimeComplete()
     {
         if(!isMoveInSameScene)
             SceneManager.LoadScene(_targetScene);

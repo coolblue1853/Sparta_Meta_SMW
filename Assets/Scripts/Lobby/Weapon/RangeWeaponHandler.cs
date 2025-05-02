@@ -22,7 +22,7 @@ public class RangeWeaponHandler : WeaponHandler
     public float Spread { get { return spread; } }
 
     [SerializeField] private int numberofProjectilesPerShot;
-    public int NumberofProjectilesPerShot { get { return numberofProjectilesPerShot; } }
+    public int NumberofProjectilesPerShot { set { numberofProjectilesPerShot = value;} get { return numberofProjectilesPerShot; } }
 
     [SerializeField] private float multipleProjectilesAngel;
     public float MultipleProjectilesAngel { get { return multipleProjectilesAngel; } }
@@ -53,9 +53,11 @@ public class RangeWeaponHandler : WeaponHandler
 
     private void CreateProjectile(Vector2 _lookDirection, float angle)
     {
-        GameObject obj = Instantiate(ProjectileObject.gameObject, projectileSpawnPosition.position, Quaternion.identity);
-        obj.GetComponent<ProjectileController>().Init(_lookDirection, this);
+        // angle을 적용한 방향으로 회전
+        Vector2 rotatedDirection = RotateVector2(_lookDirection.normalized, angle);
 
+        GameObject obj = Instantiate(ProjectileObject.gameObject, projectileSpawnPosition.position, Quaternion.identity);
+        obj.GetComponent<ProjectileController>().Init(rotatedDirection, this);
     }
     private static Vector2 RotateVector2(Vector2 v, float degree)
     {

@@ -40,4 +40,12 @@ public class Define
         SuccBest,
      
     }
+    public enum RogueState
+    {
+        None,
+        Start,
+        InRound,
+        Result,
+        End,
+    }
 }

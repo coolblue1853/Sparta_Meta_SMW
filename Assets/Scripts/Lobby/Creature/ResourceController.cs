@@ -10,12 +10,15 @@ public class ResourceController : MonoBehaviour
     private float timeSinceLastChange = float.MaxValue;
 
     public float CurrentHealth { get; private set; }
-    public float MaxHealth => statHandler.Health;
+    public float MaxHealth { get; private set; }
+    public float MoveSpeed { get; private set; }
 
     private void Awake()
     {
         statHandler = GetComponent<StatHandler>();
         baseController = GetComponent<BaseController>();
+        MaxHealth = statHandler.Health;
+        MoveSpeed = statHandler.Speed;
     }
 
     private void Start()
@@ -37,6 +40,7 @@ public class ResourceController : MonoBehaviour
     public void ResetResource()
     {
         CurrentHealth = statHandler.Health;
+        MoveSpeed = statHandler.Speed;
     }
     public bool ChangeHealth(float change)
     {
@@ -49,6 +53,7 @@ public class ResourceController : MonoBehaviour
         CurrentHealth += change;
         CurrentHealth = CurrentHealth > MaxHealth ? MaxHealth : CurrentHealth;
         CurrentHealth = CurrentHealth < 0 ? 0 : CurrentHealth;
+
 
         if (change < 0)
         {
@@ -65,5 +70,14 @@ public class ResourceController : MonoBehaviour
     }
 
 
+    public void UpdateHealth(float value)
+    {
+        MaxHealth += value;
+        CurrentHealth += value;
+    }
+    public void UpdateSpeend(float value)
+    {
+        MoveSpeed += value;
+    }
 
 }
