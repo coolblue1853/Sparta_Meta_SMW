@@ -7,20 +7,20 @@ using UnityEngine.SceneManagement;
 public class MiniGameUI : MonoBehaviour
 {
 
-    public static MiniGameUI instance;
+    public static MiniGameUI Instance;
     [SerializeField] private TextMeshProUGUI _scoreText;
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (Instance == null)
+            Instance = this;
     }
 
     private void Start()
     {
-        MiniGameScene.instance._OnScoreChanged += UpdateScoreText;
+        MiniGameScene.Instance.OnScoreChanged += UpdateScoreText;
 
         // 초기 점수 표시
-        UpdateScoreText(MiniGameScene.instance.GetScore());
+        UpdateScoreText(MiniGameScene.Instance.GetScore());
     }
 
     private void UpdateScoreText(int newScore)

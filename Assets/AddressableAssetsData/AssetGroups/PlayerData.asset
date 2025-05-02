@@ -40,8 +40,7 @@ MonoBehaviour:
   - m_GUID: c8c770e47a8a50e4883847d4dc2c1336
     m_Address: Assets/Anim/Knight/KnightAnim.controller
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 16a11195a53bebe4f9b678d009e62275, type: 2}

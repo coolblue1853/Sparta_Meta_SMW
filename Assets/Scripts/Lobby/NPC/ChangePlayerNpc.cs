@@ -31,13 +31,13 @@ public class ChangePlayerNpc : BaseNpc
 
     void ChangePlayerAnimator()
     {
-        PlayerController player = LobbyScene.Instance._playerPrefab.GetComponent<PlayerController>();
-        string adress = _manager.animatorAddresses[_index];
+        PlayerController player = LobbyScene.Instance.PlayerPrefab.GetComponent<PlayerController>();
+        string adress = _manager.AnimatorAddresses[_index];
 
         player.SetAnimator(_animator.runtimeAnimatorController, adress,
             out RuntimeAnimatorController output, out string outAdress);
 
-        _manager.animatorAddresses[_index] = outAdress;
+        _manager.AnimatorAddresses[_index] = outAdress;
         _animator.runtimeAnimatorController = output;
         _manager.Save();
     }

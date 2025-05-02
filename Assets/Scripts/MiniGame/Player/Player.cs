@@ -3,50 +3,35 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    Animator animator = null;
+    Animator _animator = null;
     Rigidbody2D _rigidbody = null;
 
-    public float flapForce = 6f;
-    public float forwardSpeed = 3f;
+    public float FlapForce = 6f;
+    public float ForwardSpeed = 3f;
 
-    bool isFlap = false;
+    bool _isFlap = false;
 
-    public bool godMode = false;
-
+    public bool GodMode = false;
     MiniGameScene _gameScene;
 
     void Start()
     {
         _rigidbody = transform.GetComponent<Rigidbody2D>();
-        _gameScene = MiniGameScene.instance;
-        /*
-        animator = transform.GetComponentInChildren<Animator>();
-
-
-        if (animator == null)
-        {
-            Debug.LogError("Not Founded Animator");
-        }
-
-        if (_rigidbody == null)
-        {
-            Debug.LogError("Not Founded Rigidbody");
-        }
-        */
+        _gameScene = MiniGameScene.Instance;
     }
 
     public void FixedUpdate()
     {
-        if (_gameScene._state != Define.MiniGameState.InGame)
+        if (_gameScene.State != Define.MiniGameState.InGame)
             return;
 
         Vector3 velocity = _rigidbody.velocity;
-        velocity.x = forwardSpeed;
+        velocity.x = ForwardSpeed;
 
-        if (isFlap)
+        if (_isFlap)
         {
-            velocity.y += flapForce;
-            isFlap = false;
+            velocity.y += FlapForce;
+            _isFlap = false;
         }
 
         _rigidbody.velocity = velocity;
@@ -57,15 +42,15 @@ public class Player : MonoBehaviour
 
     void OnClick()
     {
-        if(_gameScene._state == Define.MiniGameState.Init)
+        if(_gameScene.State == Define.MiniGameState.Init)
         {
             _gameScene.GameStart();
         }
-        else if (_gameScene._state == Define.MiniGameState.InGame)
+        else if (_gameScene.State == Define.MiniGameState.InGame)
         {
-            isFlap = true;
+            _isFlap = true;
         }
-        else if (_gameScene._state == Define.MiniGameState.End && _gameScene.isCanGoLobby)
+        else if (_gameScene.State == Define.MiniGameState.End && _gameScene.IsCanGoLobby)
         {
             _gameScene.GoLobby();
         }
@@ -76,10 +61,10 @@ public class Player : MonoBehaviour
     {
         if (collision.transform.CompareTag("Obstacle") || collision.transform.CompareTag("BackGround"))
         {
-            if (godMode)
+            if (GodMode)
                 return;
 
-            if (_gameScene._state == Define.MiniGameState.End)
+            if (_gameScene.State == Define.MiniGameState.End)
                 return;
 
             _gameScene.GameEnd();

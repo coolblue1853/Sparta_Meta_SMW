@@ -9,19 +9,18 @@ using UnityEngine.Windows;
 
 public class PlayerController : BaseController
 {
-    PlayerStatHandler _statHandler;
+    private PlayerStatHandler _statHandler;
     [SerializeField] private bool _justDirMove = false;
     [SerializeField] private GameObject _cusor;
 
     private Vector2 _cusorOffset = new Vector2(-0.1f, -0.25f);
 
-    [SerializeField] private string[] animatorAddresses;
-    [SerializeField] private Animator[] targetAnimators;
+    [SerializeField] private string[] _animatorAddresses;
+    [SerializeField] private Animator[] _targetAnimators;
 
-    private string savePath => Application.persistentDataPath + "/Player.json";
+    private string _savePath => Application.persistentDataPath + "/Player.json";
     protected override void Init()
     {
-
         _statHandler = GetComponent<PlayerStatHandler>();
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
@@ -29,18 +28,17 @@ public class PlayerController : BaseController
     }
     private void OnEnable()
     {
-
-        animatorAddresses = DataManager.instance.Load(targetAnimators, savePath);
+        _animatorAddresses = DataManager.Instance.Load(_targetAnimators, _savePath);
     }
 
     public void SetAnimator(RuntimeAnimatorController controller,string adress,
         out RuntimeAnimatorController output, out string outAdress)
     {
-        outAdress = animatorAddresses[0];
-        output = _animator.runtimeAnimatorController;
-        _animator.runtimeAnimatorController = controller;
-        animatorAddresses[0] = adress;
-        DataManager.instance.Save(animatorAddresses, savePath);
+        outAdress = _animatorAddresses[0];
+        output = Animator.runtimeAnimatorController;
+        Animator.runtimeAnimatorController = controller;
+        _animatorAddresses[0] = adress;
+        DataManager.Instance.Save(_animatorAddresses, _savePath);
     }
 
 

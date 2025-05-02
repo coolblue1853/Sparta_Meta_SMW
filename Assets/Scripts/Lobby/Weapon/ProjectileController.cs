@@ -5,52 +5,49 @@ using UnityEngine.InputSystem.XR.Haptics;
 
 public class ProjectileController : MonoBehaviour
 {
-    [SerializeField] protected LayerMask levelCollisionLayer;
+    [SerializeField] protected LayerMask _levelCollisionLayer;
 
-    protected RangeWeaponHandler rangeWeaponHandler;
+    protected RangeWeaponHandler _rangeWeaponHandler;
 
-    protected float currentDuration;
-    protected Vector2 direction;
-    protected bool isReady;
-    protected Transform pivot;
+    protected float _currentDuration;
+    protected Vector2 _direction;
+    protected bool _isReady;
+    protected Transform _pivot;
 
     protected Rigidbody2D _rigidbody;
-    protected SpriteRenderer spriteRenderer;
+    protected SpriteRenderer _spriteRenderer;
 
-    public bool fxOnDestory = true;
+    public bool _fxOnDestory = true;
     [SerializeField] protected bool isDestroyByCollsion;
 
     protected void Update()
     {
-        if (!isReady)
+        if (!_isReady)
         {
             return;
         }
 
-        currentDuration += Time.deltaTime;
+        _currentDuration += Time.deltaTime;
 
-        if (currentDuration > rangeWeaponHandler.Duration)
+        if (_currentDuration > _rangeWeaponHandler.Duration)
         {
             DestroyProjectile(transform.position, false);
         }
 
-        _rigidbody.velocity = direction * rangeWeaponHandler.Speed;
+        _rigidbody.velocity = _direction * _rangeWeaponHandler.Speed;
     }
 
     public void Init(Vector2 direction, RangeWeaponHandler weaponHandler)
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        rangeWeaponHandler = weaponHandler;
+        _rangeWeaponHandler = weaponHandler;
 
-        this.direction = direction;
-        currentDuration = 0;
+        this._direction = direction;
+        _currentDuration = 0;
         transform.localScale = Vector3.one * weaponHandler.BulletSize;
-       // spriteRenderer.color = weaponHandler.ProjectileColor;
 
-        transform.right = this.direction;
-
-   
-        isReady = true;
+        transform.right = this._direction;
+        _isReady = true;
     }
 
     protected void DestroyProjectile(Vector3 position, bool createFx)

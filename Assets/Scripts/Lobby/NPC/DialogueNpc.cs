@@ -26,7 +26,7 @@ public class DialogueNpc : BaseNpc
     }
     string GetDialogueByKey(string key)
     {
-        return _dialogueData.data.FirstOrDefault(d => d.key == key)?.text;
+        return _dialogueData.Data.FirstOrDefault(d => d.Key == key)?.Text;
     }
 
 }

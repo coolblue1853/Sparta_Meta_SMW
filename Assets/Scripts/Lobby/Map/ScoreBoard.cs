@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class ScoreBoard : MonoBehaviour
 {
-    [SerializeField]
-    private string _scoreName;
-    [SerializeField]
-    private TextMeshProUGUI _scoreTxt;
+    [SerializeField] private string _scoreName;
+    [SerializeField] private TextMeshProUGUI _scoreTxt;
+
     private void Awake()
     {
         LobbyScene.OnScoreUpdate += UpdateScoreBoard;

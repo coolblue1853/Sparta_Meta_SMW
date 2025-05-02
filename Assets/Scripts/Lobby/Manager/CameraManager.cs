@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField]
-    private Transform target;
-    [SerializeField]
-    private float lerpSpeed = 5f;
-    [SerializeField]
-    private Vector3 offset;
+    [SerializeField] private Transform _target;
+    [SerializeField] private float _lerpSpeed = 5f;
+    [SerializeField] private Vector3 _offset;
 
-    [SerializeField]
-    private GameObject cameraPivot;
-    private float  minX = 0;
-    private float  maxX = 0;
-    private float  minY = 0;
-    private float  maxY = 0;
+    [SerializeField] private GameObject _cameraPivot;
+    private float  _minX = 0;
+    private float  _maxX = 0;
+    private float  _minY = 0;
+    private float  _maxY = 0;
 
-    public bool isFixedY = false;
+    public bool IsFixedY = false;
 
     private void Awake()
     {
@@ -28,47 +24,47 @@ public class CameraManager : MonoBehaviour
     {
         if(targetPivot == null)
         {
-            cameraPivot = LobbyScene.Instance.baseMap;
+            _cameraPivot = LobbyScene.Instance.BaseMap;
         }
         else
         {
-            cameraPivot = targetPivot;
+            _cameraPivot = targetPivot;
         }
 
 
         // 카메라 경계 지정 함수, 추후 별도의 함수로 만들어야함
         // 맵로드 이후 피벗 설정
-        if (cameraPivot != null)
+        if (_cameraPivot != null)
         {
-            GameObject leftUpPivot = cameraPivot.transform.GetChild(0).gameObject;
-            GameObject rightDownPivot = cameraPivot.transform.GetChild(1).gameObject;
+            GameObject leftUpPivot = _cameraPivot.transform.GetChild(0).gameObject;
+            GameObject rightDownPivot = _cameraPivot.transform.GetChild(1).gameObject;
 
             float camHalfHeight = Camera.main.orthographicSize;
             float camHalfWidth = camHalfHeight * ((float)Screen.width / Screen.height);
 
 
-            minX = leftUpPivot.transform.position.x + camHalfWidth;
-            maxX = rightDownPivot.transform.position.x - camHalfWidth;
-            minY = rightDownPivot.transform.position.y + camHalfHeight;
-            maxY = leftUpPivot.transform.position.y - camHalfHeight;
+            _minX = leftUpPivot.transform.position.x + camHalfWidth;
+            _maxX = rightDownPivot.transform.position.x - camHalfWidth;
+            _minY = rightDownPivot.transform.position.y + camHalfHeight;
+            _maxY = leftUpPivot.transform.position.y - camHalfHeight;
         }
     }
 
     private void LateUpdate()
     {
-        if (target == null) return;
+        if (_target == null) return;
 
-        Vector3 destinationPosition = target.position + offset;
+        Vector3 destinationPosition = _target.position + _offset;
         Vector3 lerpPosition = Vector3.Lerp(transform.position, destinationPosition,
-            lerpSpeed * Time.deltaTime);
+            _lerpSpeed * Time.deltaTime);
 
-        if (cameraPivot != null)
+        if (_cameraPivot != null)
         {
-            lerpPosition.x = Mathf.Clamp(lerpPosition.x, minX, maxX);
-            lerpPosition.y = Mathf.Clamp(lerpPosition.y, minY, maxY);
+            lerpPosition.x = Mathf.Clamp(lerpPosition.x, _minX, _maxX);
+            lerpPosition.y = Mathf.Clamp(lerpPosition.y, _minY, _maxY);
         }
 
-        if(!isFixedY)
+        if(!IsFixedY)
             transform.position = lerpPosition;
         else
             transform.position = new Vector3(lerpPosition.x, transform.position.y, transform.position.z);

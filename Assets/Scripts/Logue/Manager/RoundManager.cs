@@ -6,22 +6,15 @@ public class RoundManager : MonoBehaviour
 {
     private Coroutine waveRoutine;
 
-    [SerializeField]
-    private List<GameObject> enemyPrefabs; // 생성할 적 프리팹 리스트
+    [SerializeField] private List<GameObject> _enemyPrefabs; // 생성할 적 프리팹 리스트
+    [SerializeField] private List<Rect> _spawnAreas; // 적을 생성할 영역 리스트
+    [SerializeField] private Color _gizmoColor = new Color(1, 0, 0, 0.3f); // 기즈모 색상
+    [SerializeField] private List<EnemyController> _activeEnemies = new List<EnemyController>(); // 현재 활성화된 적들
 
-    [SerializeField]
-    private List<Rect> spawnAreas; // 적을 생성할 영역 리스트
+    public bool EnemySpawnComplite;
 
-    [SerializeField]
-    private Color gizmoColor = new Color(1, 0, 0, 0.3f); // 기즈모 색상
-
-    [SerializeField]
-    private List<EnemyController> activeEnemies = new List<EnemyController>(); // 현재 활성화된 적들
-
-    public bool enemySpawnComplite;
-
-    [SerializeField] private float timeBetweenSpawns = 0.2f;
-    [SerializeField] private float timeBetweenWaves = 1f;
+    [SerializeField] private float _timeBetweenSpawns = 0.2f;
+    [SerializeField] private float _timeBetweenWaves = 1f;
 
     public void StartWave(int waveCount)
     {
@@ -38,30 +31,30 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator SpawnWave(int waveCount)
     {
-        enemySpawnComplite = false;
-        yield return new WaitForSeconds(timeBetweenWaves);
+        EnemySpawnComplite = false;
+        yield return new WaitForSeconds(_timeBetweenWaves);
         for (int i = 0; i < waveCount; i++)
         {
-            yield return new WaitForSeconds(timeBetweenSpawns);
+            yield return new WaitForSeconds(_timeBetweenSpawns);
             SpawnRandomEnemy();
         }
 
-        enemySpawnComplite = true;
+        EnemySpawnComplite = true;
     }
 
     private void SpawnRandomEnemy()
     {
-        if (enemyPrefabs.Count == 0 || spawnAreas.Count == 0)
+        if (_enemyPrefabs.Count == 0 || _spawnAreas.Count == 0)
         {
             Debug.LogWarning("Enemy Prefabs 또는 Spawn Areas가 설정되지 않았습니다.");
             return;
         }
 
         // 랜덤한 적 프리팹 선택
-        GameObject randomPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        GameObject randomPrefab = _enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)];
 
         // 랜덤한 영역 선택
-        Rect randomArea = spawnAreas[Random.Range(0, spawnAreas.Count)];
+        Rect randomArea = _spawnAreas[Random.Range(0, _spawnAreas.Count)];
 
         // Rect 영역 내부의 랜덤 위치 계산
         Vector2 randomPosition = new Vector2(
@@ -74,16 +67,16 @@ public class RoundManager : MonoBehaviour
         EnemyController enemyController = spawnedEnemy.GetComponent<EnemyController>();
       
         enemyController.SetRoundManager(this); // RoundManager 연결
-        activeEnemies.Add(enemyController);
+        _activeEnemies.Add(enemyController);
     }
 
     // 기즈모를 그려 영역을 시각화 (선택된 경우에만 표시)
     private void OnDrawGizmosSelected()
     {
-        if (spawnAreas == null) return;
+        if (_spawnAreas == null) return;
 
-        Gizmos.color = gizmoColor;
-        foreach (var area in spawnAreas)
+        Gizmos.color = _gizmoColor;
+        foreach (var area in _spawnAreas)
         {
             Vector3 center = new Vector3(area.x + area.width / 2, area.y + area.height / 2);
             Vector3 size = new Vector3(area.width, area.height);
@@ -93,21 +86,21 @@ public class RoundManager : MonoBehaviour
 
     public bool CheckRoundEnd()
     {
-        return (activeEnemies.Count == 0 && enemySpawnComplite);
+        return (_activeEnemies.Count == 0 && EnemySpawnComplite);
     }
     public void RemoveEnemy(EnemyController enemy)
     {
-        if (activeEnemies.Contains(enemy))
-            activeEnemies.Remove(enemy);
+        if (_activeEnemies.Contains(enemy))
+            _activeEnemies.Remove(enemy);
     }
 
     public  void EndGame()
     {
-        for (int i = activeEnemies.Count - 1; i >= 0; i--)
+        for (int i = _activeEnemies.Count - 1; i >= 0; i--)
         {
-            if (activeEnemies[i] != null)
-                Destroy(activeEnemies[i].gameObject);
-            activeEnemies.RemoveAt(i);
+            if (_activeEnemies[i] != null)
+                Destroy(_activeEnemies[i].gameObject);
+            _activeEnemies.RemoveAt(i);
         }
     }
 

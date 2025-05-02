@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,23 +7,23 @@ public class LobbyScene : MonoBehaviour
     public static LobbyScene Instance;
     public LogueGameScene LogueGameScene;
     // 추후 프리팹으로 된 플레이어 생성
-    public PlayerController _playerPrefab;
+    public PlayerController PlayerPrefab;
     // 점수를 갱신하는 옵저버
     public static event Action OnScoreUpdate;
     public static event Action MoveSceneSave;
     public static event Action EndGameSave;
-    public int _showResult;
-    public int _showRougeResult;
+    public int ShowResult;
+    public int ShowRougeResult;
 
-    public GameObject baseMap;
-    [SerializeField] private GameObject originPivot;
+    public GameObject BaseMap;
+    [SerializeField] private GameObject _originPivot;
 
-    public WeaponHandler[] weaponArr;
+    public WeaponHandler[] WeaponArr;
 
     private void Awake()
     {
-        _playerPrefab.CreatWeapon(weaponArr[0]);
-        _showRougeResult = -1;
+        PlayerPrefab.CreatWeapon(WeaponArr[0]);
+        ShowRougeResult = -1;
         if (Instance == null)
         {
             Instance = this;
@@ -52,18 +50,18 @@ public class LobbyScene : MonoBehaviour
         var result = PlayerPrefs.GetInt("IsHighScore", -1);
         if ( prevScene != SceneManager.GetActiveScene().name && result != -1)
         {
-            _showResult = result;
+            ShowResult = result;
         }
         else
         {
-            _showResult = -1;
+            ShowResult = -1;
         }
         PlayerPrefs.SetString("PrevScene", SceneManager.GetActiveScene().name);
 
     }
     private void LoadData()
     {
-        SetPositon("PlayerPosition", _playerPrefab.transform);
+        SetPositon("PlayerPosition", PlayerPrefab.transform);
         SetPositon("CameraPosition", Camera.main.transform);
     }
     private void SetPositon(string name, Transform obj)
@@ -80,20 +78,20 @@ public class LobbyScene : MonoBehaviour
 
     public void StartLogueGame(Transform transform)
     {
-        _playerPrefab.CreatWeapon(weaponArr[1]);
+        PlayerPrefab.CreatWeapon(WeaponArr[1]);
         Camera.main.transform.position = transform.position;
-        _playerPrefab.transform.position = transform.position;
+        PlayerPrefab.transform.position = transform.position;
         LogueGameScene.StartLogueGame();
     }
 
 
     public void EndLogueGame()
     {
-        _playerPrefab.CreatWeapon(weaponArr[0]);
+        PlayerPrefab.CreatWeapon(WeaponArr[0]);
         CameraManager cameraManager = Camera.main.GetComponent<CameraManager>();
-        cameraManager.ChangePivot(baseMap);
-        Camera.main.transform.position = originPivot.transform.position;
-        _playerPrefab.transform.position = originPivot.transform.position;
+        cameraManager.ChangePivot(BaseMap);
+        Camera.main.transform.position = _originPivot.transform.position;
+        PlayerPrefab.transform.position = _originPivot.transform.position;
         LogueGameScene.State = Define.RogueState.End;
     }
 
