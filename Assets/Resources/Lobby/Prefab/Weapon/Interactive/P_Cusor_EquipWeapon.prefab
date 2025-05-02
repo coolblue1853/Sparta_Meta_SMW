@@ -96,7 +96,7 @@ MonoBehaviour:
   numberofProjectilesPerShot: 1
   multipleProjectilesAngel: 1
   projectileColor: {r: 0, g: 0, b: 0, a: 0}
-  ProjectileObject: {fileID: 5957294749522042605, guid: 1ce31c11a3e7fd24ebfd6c5ec71413a7, type: 3}
+  ProjectileObject: {fileID: -540646595678543165, guid: 1ce31c11a3e7fd24ebfd6c5ec71413a7, type: 3}
 --- !u!1 &9163180564020150177
 GameObject:
   m_ObjectHideFlags: 0

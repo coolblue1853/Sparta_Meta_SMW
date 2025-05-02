@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public abstract class BaseController : MonoBehaviour
 {
+    protected ResourceController _resourceController;
     //자식의 스프라이트 오브젝트
     [SerializeField]
     protected SpriteRenderer _spriteRenderer;
@@ -39,10 +41,14 @@ public abstract class BaseController : MonoBehaviour
     protected float _verticalSpeed = 0f;
     protected bool _isGrounded = true;
 
-
+    private Vector2 knockback = Vector2.zero;
+    private float knockbackDuration = 0.0f;
+    private float knockbackTimer;
     private void Start()
     {
         Init();
+
+        _resourceController = GetComponent<ResourceController>();
 
         if (_WeaponPrefab != null)
         {
@@ -60,6 +66,7 @@ public abstract class BaseController : MonoBehaviour
             switch (_state)
             {
                 case Define.State.Die:
+                    UpdateDie();
                     break;
                 case Define.State.Idle:
                     _animator.CrossFade("Idle", 0.1f);
@@ -78,9 +85,6 @@ public abstract class BaseController : MonoBehaviour
     {
         switch (State)
         {
-            case Define.State.Die:
-                // UpdateDie();
-                break;
             case Define.State.Idle:
                 UpdateIdle();
                 break;
@@ -90,8 +94,6 @@ public abstract class BaseController : MonoBehaviour
 
         }
 
-        // 이건 나중에 플레이어컨트롤러로 이동
-        // 업데이트도 버츄얼로 변경후 오버라이드
         HandleAttackDelay();
     }
 
@@ -101,6 +103,9 @@ public abstract class BaseController : MonoBehaviour
         {
             case Define.State.Moving:
                 UpdateMoving();
+                break;
+            case Define.State.Knockback:
+                UpdateKnockBack();
                 break;
         }
 
@@ -131,9 +136,36 @@ public abstract class BaseController : MonoBehaviour
     {
         _weaponHandler.Attack(_attackDir);
     }
+    public void ApplyKnockback(Transform other, float power, float duration)
+    {
+        _rigidbody.velocity = Vector2.zero;
+        knockbackDuration = duration;
+        knockback = -(other.position - transform.position).normalized * power;
+         knockbackTimer = 0;
+        _state = Define.State.Knockback;
+    }
+
     protected abstract void Init();
 
-    // protected virtual void UpdateDie() { }
+    protected virtual void UpdateKnockBack()
+    {
+        knockbackTimer += Time.deltaTime;
+
+        if (knockbackTimer < knockbackDuration)
+        {
+            _rigidbody.velocity = knockback;
+        }
+        else
+        {
+            knockbackTimer = 0f;
+            knockback = Vector2.zero;
+            _rigidbody.velocity = Vector2.zero;
+
+            _state = Define.State.Moving;
+        }
+    }
+
+    protected virtual void UpdateDie() { }
     protected virtual void UpdateMoving() { }
     protected virtual void UpdateIdle() { }
     protected virtual void UpdateJump() { }

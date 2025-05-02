@@ -9,6 +9,7 @@ public class Define
         Die,
         Moving,
         Idle,
+        Knockback,
         Skill,
         Jump,
     }

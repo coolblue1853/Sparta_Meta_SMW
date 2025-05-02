@@ -22,9 +22,23 @@ public class CameraManager : MonoBehaviour
 
     private void Awake()
     {
+        ChangePivot();
+    }
+    public void ChangePivot(GameObject targetPivot = null)
+    {
+        if(targetPivot == null)
+        {
+            cameraPivot = LobbyScene.Instance.baseMap;
+        }
+        else
+        {
+            cameraPivot = targetPivot;
+        }
+
+
         // 카메라 경계 지정 함수, 추후 별도의 함수로 만들어야함
         // 맵로드 이후 피벗 설정
-        if(cameraPivot != null)
+        if (cameraPivot != null)
         {
             GameObject leftUpPivot = cameraPivot.transform.GetChild(0).gameObject;
             GameObject rightDownPivot = cameraPivot.transform.GetChild(1).gameObject;

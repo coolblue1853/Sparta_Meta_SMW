@@ -28,8 +28,6 @@ public class EnemyController : BaseController
         {
             _rigidbody.velocity = direction * _statHandler.Speed;
         }
-
- 
     }
 
     protected override void UpdateSkill()
@@ -47,12 +45,16 @@ public class EnemyController : BaseController
             _state = Define.State.Moving;
         }
     }
+    protected override void UpdateDie()
+    {
+        base.UpdateDie();
+        //가능하다면 오브젝트 풀링 적용
+        Destroy(gameObject);
+    }
     protected float DistanceToTarget()
     {
         return Vector3.Distance(transform.position, target.position);
     }
-
-
     protected Vector2 DirectionToTarget()
     {
         return (target.position - transform.position).normalized;

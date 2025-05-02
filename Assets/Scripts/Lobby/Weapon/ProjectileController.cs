@@ -5,22 +5,22 @@ using UnityEngine.InputSystem.XR.Haptics;
 
 public class ProjectileController : MonoBehaviour
 {
-    [SerializeField] private LayerMask levelCollisionLayer;
+    [SerializeField] protected LayerMask levelCollisionLayer;
 
-    private RangeWeaponHandler rangeWeaponHandler;
+    protected RangeWeaponHandler rangeWeaponHandler;
 
-    private float currentDuration;
-    private Vector2 direction;
-    private bool isReady;
-    private Transform pivot;
+    protected float currentDuration;
+    protected Vector2 direction;
+    protected bool isReady;
+    protected Transform pivot;
 
-    private Rigidbody2D _rigidbody;
-    private SpriteRenderer spriteRenderer;
+    protected Rigidbody2D _rigidbody;
+    protected SpriteRenderer spriteRenderer;
 
     public bool fxOnDestory = true;
-    [SerializeField] private bool isDestroyByCollsion;
+    [SerializeField] protected bool isDestroyByCollsion;
 
-    private void Update()
+    protected void Update()
     {
         if (!isReady)
         {
@@ -52,27 +52,8 @@ public class ProjectileController : MonoBehaviour
    
         isReady = true;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (levelCollisionLayer.value == (levelCollisionLayer.value | (1 << collision.gameObject.layer)))
-        {
 
-            DestroyProjectile(collision.ClosestPoint(transform.position) - direction * .2f, fxOnDestory);
-        }
-        else if (rangeWeaponHandler.target.value == (rangeWeaponHandler.target.value | (1 << collision.gameObject.layer)))
-        {
-            //npc 상호작용
-            var npcController = collision.GetComponent<BaseNpc>();
-            if(npcController != null)
-            {
-                npcController.InteractiveNPC();
-            }
-            
-            if(isDestroyByCollsion)
-                DestroyProjectile(collision.ClosestPoint(transform.position), fxOnDestory);
-        }
-    }
-    private void DestroyProjectile(Vector3 position, bool createFx)
+    protected void DestroyProjectile(Vector3 position, bool createFx)
     {
         Destroy(this.gameObject);
     }

@@ -61,5 +61,12 @@ public class RoomController : MonoBehaviour
         PlayerPrefs.SetString("PlayerPosition", $"{playerPositon.x},{playerPositon.y},{playerPositon.z}");
         PlayerPrefs.SetString("CameraPosition", $"{mainCamera.transform.position.x},{mainCamera.transform.position.y},{mainCamera.transform.position.z}");
     }
+    private void OnApplicationQuit()
+    {
+       LobbyScene.Instance.EndLogueGame();
+        Vector3 playerPositon = transform.position;
+        PlayerPrefs.SetString("PlayerPosition", $"{playerPositon.x},{playerPositon.y},{playerPositon.z}");
+        PlayerPrefs.SetString("CameraPosition", $"{mainCamera.transform.position.x},{mainCamera.transform.position.y},{mainCamera.transform.position.z}");
+    }
 
 }

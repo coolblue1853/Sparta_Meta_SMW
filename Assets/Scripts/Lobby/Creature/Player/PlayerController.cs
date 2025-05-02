@@ -133,8 +133,14 @@ public class PlayerController : BaseController
                 State = Define.State.Moving;
             }
         }
-
     }
+
+    protected override void UpdateDie()
+    {
+        _resourceController.ResetResource();
+        LobbyScene.Instance.EndLogueGame();
+    }
+
     void ChangeCusor(Vector2 input)
     {
         Vector2 offeset = _cusorOffset;

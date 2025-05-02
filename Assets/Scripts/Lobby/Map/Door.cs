@@ -10,6 +10,18 @@ public class Door : MonoBehaviour, ITimeTriggerable
     private float _waitTime = 1.0f;
     [SerializeField]
     private Transform _pivot;
+
+    //같은 씬에서 이동할때
+    public bool isMoveInSameScene =false;
+    [SerializeField]
+    private Transform targetPositon;
+    [SerializeField]
+    private GameObject targetPivot;
+    CameraManager _camera;
+    private void Awake()
+    {
+        _camera = Camera.main.GetComponent<CameraManager>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -30,6 +42,12 @@ public class Door : MonoBehaviour, ITimeTriggerable
     // 콜백으로 호출되는 메서드
     public void OnTriggerTimeComplete()
     {
-        SceneManager.LoadScene(_targetScene);
+        if(!isMoveInSameScene)
+            SceneManager.LoadScene(_targetScene);
+        else
+        {
+            _camera.ChangePivot(targetPivot);
+            LobbyScene.Instance.StartLogueGame(targetPositon);
+        }
     }
 }

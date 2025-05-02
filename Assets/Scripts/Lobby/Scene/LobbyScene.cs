@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class LobbyScene : MonoBehaviour
 {
     public static LobbyScene Instance;
+    public LogueGameScene LogueGameScene;
     // 추후 프리팹으로 된 플레이어 생성
     public GameObject _playerPrefab;
     // 점수를 갱신하는 옵저버
@@ -14,6 +15,9 @@ public class LobbyScene : MonoBehaviour
     public static event Action MoveSceneSave;
     public static event Action EndGameSave;
     public int _showResult;
+
+    public GameObject baseMap;
+    [SerializeField] private GameObject originPivot;
 
     private void Awake()
     {
@@ -70,6 +74,18 @@ public class LobbyScene : MonoBehaviour
         obj.transform.position = loadedPosition;
     }
 
+    public void StartLogueGame(Transform transform)
+    {
+        Camera.main.transform.position = transform.position;
+        _playerPrefab.transform.position = transform.position;
+    }
+    public void EndLogueGame()
+    {
+        CameraManager cameraManager = Camera.main.GetComponent<CameraManager>();
+        cameraManager.ChangePivot(baseMap);
+        Camera.main.transform.position = originPivot.transform.position;
+        _playerPrefab.transform.position = originPivot.transform.position;
+    }
 
     //테스트용
     private void Update()
