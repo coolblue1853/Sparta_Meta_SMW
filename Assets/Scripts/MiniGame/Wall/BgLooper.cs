@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 public class BgLooper : MonoBehaviour
 {
-    public int NumBgCount = 5;
+    public int numBgCount = 5;
 
-    public int ObstacleCount = 0;
-    public Vector3 ObstacleLastPosition = Vector3.zero;
+    public int obstacleCount = 0;
+    public Vector3 obstacleLastPosition = Vector3.zero;
 
     void Start()
     {
         Obstacle[] obstacles = GameObject.FindObjectsOfType<Obstacle>();
-        ObstacleLastPosition = obstacles[0].transform.position;
-        ObstacleCount = obstacles.Length;
+        obstacleLastPosition = obstacles[0].transform.position;
+        obstacleCount = obstacles.Length;
 
-        for (int i = 0; i < ObstacleCount; i++)
+        for (int i = 0; i < obstacleCount; i++)
         {
-            ObstacleLastPosition = obstacles[i].SetRandomPlace(ObstacleLastPosition, ObstacleCount);
+            obstacleLastPosition = obstacles[i].SetRandomPlace(obstacleLastPosition, obstacleCount);
         }
     }
 
@@ -28,7 +28,7 @@ public class BgLooper : MonoBehaviour
             float widthOfBgObject = ((BoxCollider2D)collision).bounds.size.x;
             Vector3 pos = collision.transform.position;
 
-            pos.x += widthOfBgObject * NumBgCount;
+            pos.x += widthOfBgObject * numBgCount;
             collision.transform.position = pos;
             return;
         }
@@ -36,7 +36,7 @@ public class BgLooper : MonoBehaviour
         Obstacle obstacle = collision.GetComponent<Obstacle>();
         if (obstacle)
         {
-            ObstacleLastPosition = obstacle.SetRandomPlace(ObstacleLastPosition, ObstacleCount);
+            obstacleLastPosition = obstacle.SetRandomPlace(obstacleLastPosition, obstacleCount);
         }
     }
 }

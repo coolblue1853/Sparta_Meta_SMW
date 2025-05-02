@@ -9,18 +9,19 @@ using UnityEngine.Windows;
 
 public class PlayerController : BaseController
 {
-    private PlayerStatHandler _statHandler;
+    PlayerStatHandler _statHandler;
     [SerializeField] private bool _justDirMove = false;
     [SerializeField] private GameObject _cusor;
 
     private Vector2 _cusorOffset = new Vector2(-0.1f, -0.25f);
 
-    [SerializeField] private string[] _animatorAddresses;
-    [SerializeField] private Animator[] _targetAnimators;
+    [SerializeField] private string[] animatorAddresses;
+    [SerializeField] private Animator[] targetAnimators;
 
-    private string _savePath => Application.persistentDataPath + "/Player.json";
+    private string savePath => Application.persistentDataPath + "/Player.json";
     protected override void Init()
     {
+
         _statHandler = GetComponent<PlayerStatHandler>();
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
@@ -28,17 +29,18 @@ public class PlayerController : BaseController
     }
     private void OnEnable()
     {
-        _animatorAddresses = DataManager.Instance.Load(_targetAnimators, _savePath);
+
+        animatorAddresses = DataManager.instance.Load(targetAnimators, savePath);
     }
 
     public void SetAnimator(RuntimeAnimatorController controller,string adress,
         out RuntimeAnimatorController output, out string outAdress)
     {
-        outAdress = _animatorAddresses[0];
-        output = Animator.runtimeAnimatorController;
-        Animator.runtimeAnimatorController = controller;
-        _animatorAddresses[0] = adress;
-        DataManager.Instance.Save(_animatorAddresses, _savePath);
+        outAdress = animatorAddresses[0];
+        output = _animator.runtimeAnimatorController;
+        _animator.runtimeAnimatorController = controller;
+        animatorAddresses[0] = adress;
+        DataManager.instance.Save(animatorAddresses, savePath);
     }
 
 
@@ -69,11 +71,12 @@ public class PlayerController : BaseController
             _verticalSpeed -= _statHandler.Gravity * Time.deltaTime;
             _height += _verticalSpeed * Time.deltaTime;
 
-            if (_height <= 0.01f) // 여유를 줌
+            if (_height <= 0.02f) // 여유를 줌
             {
                 _height = 0f;
                 _verticalSpeed = 0f;
                 _isGrounded = true;
+                State = Define.State.Moving;
             }
         }
 
@@ -121,7 +124,7 @@ public class PlayerController : BaseController
             State = Define.State.Jump;
             _verticalSpeed = _statHandler.JumpPower;
             _isGrounded = false;
-            UpdateJump();
+           // UpdateJump();
         }
     }
     // 쉬프트를 이용한 방향 전환

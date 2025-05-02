@@ -6,26 +6,31 @@ public abstract class BaseController : MonoBehaviour
 {
     protected ResourceController _resourceController;
     //자식의 스프라이트 오브젝트
-    [SerializeField] protected SpriteRenderer _spriteRenderer;
+    [SerializeField]
+    protected SpriteRenderer _spriteRenderer;
     protected Rigidbody2D _rigidbody;
 
-    public Animator Animator;
+    public Animator _animator;
 
     [Header("Define")]
-    [SerializeField] protected Define.State _state = Define.State.Idle;
-    [SerializeField] protected Define.Dir _animDir = Define.Dir.None;
+    [SerializeField]
+    protected Define.State _state = Define.State.Idle;
+    [SerializeField]
+    protected Define.Dir _animDir = Define.Dir.None;
 
     [Header("Dir")]
-    [SerializeField] protected Vector2 _moveDir = Vector2.zero;
-
-    public Vector2 MoveDir { get { return _moveDir; } }
+    [SerializeField]
+    protected Vector2 _moveDir = Vector2.zero;
+    public Vector2 _MoveDir { get { return _moveDir; } }
 
 
     [Header("Weapon Info")]
+    //[SerializeField] public WeaponHandler _WeaponPrefab;
     [SerializeField] public WeaponHandler _weaponHandler;
     [SerializeField] protected SpriteRenderer _weaponRnderer;
 
-    [SerializeField] private Transform _weaponPivot;
+    [SerializeField]
+    private Transform _weaponPivot;
     protected Vector2 _attackDir = Vector2.right;
     protected bool _isAttacking;
     private float _timeSinceLastAttack = float.MaxValue;
@@ -40,7 +45,6 @@ public abstract class BaseController : MonoBehaviour
     private Vector2 knockback = Vector2.zero;
     private float knockbackDuration = 0.0f;
     private float knockbackTimer;
-
     private void Start()
     {
         Init();
@@ -56,6 +60,7 @@ public abstract class BaseController : MonoBehaviour
         _weaponRnderer = _weaponHandler.transform.GetChild(0).GetComponent<SpriteRenderer>();
         _weaponHandler.transform.parent = _weaponRnderer.transform;
         _weaponHandler.transform.position = _weaponPivot.position;
+
     }
 
     public virtual Define.State State
@@ -70,13 +75,13 @@ public abstract class BaseController : MonoBehaviour
                     UpdateDie();
                     break;
                 case Define.State.Idle:
-                    Animator.CrossFade("Idle", 0.1f);
+                    _animator.CrossFade("Idle", 0.1f);
                     break;
                 case Define.State.Moving:
-                    Animator.CrossFade("Run", 0.1f);
+                    _animator.CrossFade("Run", 0.1f);
                     break;
                 case Define.State.Skill:
-                    Animator.CrossFade("Attack", 0.1f, -1, 0);
+                    _animator.CrossFade("Attack", 0.1f, -1, 0);
                     break;
             }
         }
@@ -92,7 +97,9 @@ public abstract class BaseController : MonoBehaviour
             case Define.State.Skill:
                 UpdateSkill();
                 break;
+
         }
+
         HandleAttackDelay();
     }
 

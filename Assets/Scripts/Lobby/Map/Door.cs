@@ -4,16 +4,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Door : MonoBehaviour, ITimeTriggerable
 {
-    [SerializeField] private string _targetScene;
-    [SerializeField] private float _waitTime = 1.0f;
-    [SerializeField] private Transform _pivot;
+    [SerializeField]
+    private string _targetScene;
+    [SerializeField]
+    private float _waitTime = 1.0f;
+    [SerializeField]
+    private Transform _pivot;
 
     //같은 씬에서 이동할때
-    public bool IsMoveInSameScene =false;
-    [SerializeField] private Transform _targetPositon;
-    [SerializeField] private GameObject _targetPivot;
-    private CameraManager _camera;
-
+    public bool isMoveInSameScene =false;
+    [SerializeField]
+    private Transform targetPositon;
+    [SerializeField]
+    private GameObject targetPivot;
+    CameraManager _camera;
     private void Awake()
     {
         _camera = Camera.main.GetComponent<CameraManager>();
@@ -38,12 +42,12 @@ public class Door : MonoBehaviour, ITimeTriggerable
     // 콜백으로 호출되는 메서드
     public  void OnTriggerTimeComplete()
     {
-        if(!IsMoveInSameScene)
+        if(!isMoveInSameScene)
             SceneManager.LoadScene(_targetScene);
         else
         {
-            _camera.ChangePivot(_targetPivot);
-            LobbyScene.Instance.StartLogueGame(_targetPositon);
+            _camera.ChangePivot(targetPivot);
+            LobbyScene.Instance.StartLogueGame(targetPositon);
         }
     }
 }

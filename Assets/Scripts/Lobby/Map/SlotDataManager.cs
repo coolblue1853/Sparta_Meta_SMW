@@ -9,18 +9,18 @@ using UnityEngine;
 
 public class SlotDataManager : MonoBehaviour
 {
-    private string _savePath => Application.persistentDataPath + "/ChangePlayer.json";
-    public Animator[] TargetAnimators;
-    public string[] AnimatorAddresses;
-    private Action _onEndGameSave;
-    private Action _onMoveSceneSave;
+    private string savePath => Application.persistentDataPath + "/ChangePlayer.json";
+    public Animator[] targetAnimators;
+    public string[] animatorAddresses;
+    private Action onEndGameSave;
+    private Action onMoveSceneSave;
     private void OnEnable()
     {
-        AnimatorAddresses = DataManager.Instance.Load(TargetAnimators, _savePath);
+        animatorAddresses = DataManager.instance.Load(targetAnimators, savePath);
     }
 
     public void Save()
     {
-        DataManager.Instance.Save(AnimatorAddresses, _savePath);
+        DataManager.instance.Save(animatorAddresses, savePath);
     }
 }

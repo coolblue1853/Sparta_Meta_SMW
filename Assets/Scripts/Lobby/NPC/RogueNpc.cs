@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class RogueNpc : DialogueNpc
 {
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
          if (collision.CompareTag("PlayerRange"))
         {
-            var result = LobbyScene.Instance.ShowRougeResult;
+            var result = LobbyScene.Instance._showRougeResult;
             if (result != -1)
             {
                 if(result == 0)
@@ -19,7 +21,7 @@ public class RogueNpc : DialogueNpc
             }
             else
             {
-                LobbyScene.Instance.ShowRougeResult = -1;
+                LobbyScene.Instance._showRougeResult = -1;
                 ShowTextBox(Define.DialogueKey.Close.ToString());
             }
         }

@@ -7,22 +7,23 @@ using static Define;
 
 public class MiniGameScene : MonoBehaviour
 {
-    public MiniGameState State = Define.MiniGameState.None;
 
-    public event Action<int> OnScoreChanged;
+    public MiniGameState _state = Define.MiniGameState.None;
 
-    public static MiniGameScene Instance;
-    public MiniGameUI GameUI;
-    [SerializeField] private int _currentScore = 0;
+    public event Action<int> _OnScoreChanged;
 
+    public static MiniGameScene instance;
+    public MiniGameUI _gameUI;
+    [SerializeField]
+    private int _currentScore = 0;
     private int _highScore;
-    public bool IsCanGoLobby = false;
+    public bool isCanGoLobby = false;
     private void Awake()
     {
 
-        if(Instance == null)
+        if(instance == null)
         {
-            Instance = this;
+            instance = this;
         }
 
     }
@@ -33,26 +34,26 @@ public class MiniGameScene : MonoBehaviour
 
     private void Init()
     {
-        GameUI = MiniGameUI.Instance;
+        _gameUI = MiniGameUI.instance;
         Time.timeScale = 0;
         _currentScore = 0;
-        GameUI.SetStartUI(true);
-        State = MiniGameState.Init;
-        IsCanGoLobby = false;
+        _gameUI.SetStartUI(true);
+        _state = MiniGameState.Init;
+        isCanGoLobby = false;
     }
     public void GameStart()
     {
         Time.timeScale = 1;
-        GameUI.SetStartUI(false);
-        GameUI.SetInGameUI(true);
-        State = MiniGameState.InGame;
+        _gameUI.SetStartUI(false);
+        _gameUI.SetInGameUI(true);
+        _state = MiniGameState.InGame;
         _highScore = PlayerPrefs.GetInt("HighScore", 0);
     }
 
     public void GameEnd()
     {
-        GameUI.SetInGameUI(false);
-        GameUI.SetEndGameUI(true, _currentScore, _highScore);
+        _gameUI.SetInGameUI(false);
+        _gameUI.SetEndGameUI(true, _currentScore, _highScore);
 
         // 최고점수 갱신
         if(_highScore < _currentScore)
@@ -65,13 +66,13 @@ public class MiniGameScene : MonoBehaviour
             PlayerPrefs.SetInt("IsHighScore", 0);
         }
 
-        State = MiniGameState.End;
+        _state = MiniGameState.End;
         PlayerPrefs.SetString("PrevScene", SceneManager.GetActiveScene().name);
         Invoke("LobbyInvoke", 1f);
     }
     void LobbyInvoke()
     {
-        IsCanGoLobby = true;
+        isCanGoLobby = true;
     }
 
     public void GoLobby()
@@ -82,7 +83,7 @@ public class MiniGameScene : MonoBehaviour
     public void AddScore(int score)
     {
         _currentScore += score;
-        OnScoreChanged?.Invoke(_currentScore);
+        _OnScoreChanged?.Invoke(_currentScore);
     }
     public int GetScore()
     {

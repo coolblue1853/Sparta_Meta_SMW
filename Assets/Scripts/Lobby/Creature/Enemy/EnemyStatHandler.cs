@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyStatHandler : StatHandler
 {
-    [Range(0, 30f)][SerializeField] private float _gravity = 20f;
+    [Range(0, 30f)][SerializeField] private float gravity = 20f;
     public float Gravity
     {
-        get => _gravity;
-        set => _gravity = Mathf.Clamp(value, 0, 30);
+        get => gravity;
+        set => gravity = Mathf.Clamp(value, 0, 30);
     }
 }

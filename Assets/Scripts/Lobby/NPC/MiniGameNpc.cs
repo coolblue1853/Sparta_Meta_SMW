@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MiniGameNpc : DialogueNpc
 {
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
          if (collision.CompareTag("PlayerRange"))
         {
-            var result = LobbyScene.Instance.ShowResult;
+            var result = LobbyScene.Instance._showResult;
             if (result != -1)
             {
                 if(result == 0)

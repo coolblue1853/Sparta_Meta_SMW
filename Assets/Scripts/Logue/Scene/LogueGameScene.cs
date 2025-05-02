@@ -5,25 +5,26 @@ using UnityEngine;
 
 public class LogueGameScene : MonoBehaviour
 {
-    public static LogueGameScene Instance;
+    public static LogueGameScene instance;
 
     RoundManager _roundManager;
-    private int _roundCount = 1;
-    [SerializeField] protected Define.RogueState _state = Define.RogueState.None;
+    private int roundCount = 1;
+    [SerializeField]
+    protected Define.RogueState _state = Define.RogueState.None;
 
-    public GameObject CloseDoorMap;
-    public GameObject OpenDoorMap;
+    public GameObject _closeDoorMap;
+    public GameObject _openDoorMap;
 
     [SerializeField] private GameObject[] _resultArr;
     [SerializeField] private Transform _resultPivot;
 
-    GameObject _result;
+    GameObject result;
 
     private void Awake()
     {
-        if(Instance == null)
+        if(instance == null)
         {
-            Instance = this;
+            instance = this;
         }
         _roundManager = GetComponentInChildren<RoundManager>();
     }
@@ -50,7 +51,7 @@ public class LogueGameScene : MonoBehaviour
     }
     public void StartLogueGame()
     {
-        _roundCount = 1;
+        roundCount = 1;
         State = Define.RogueState.Start;
     }
 
@@ -65,17 +66,19 @@ public class LogueGameScene : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            PlayerPrefs.SetInt("RogueBest", _roundCount);
+            PlayerPrefs.SetInt("RogueBest", roundCount);
         }
     }
+
+ 
     private void UpdateStart()
     {
-        if (_result != null)
-            Destroy(_result);
-        CloseDoorMap.SetActive(true);
-        OpenDoorMap.SetActive(false);
+        if (result != null)
+            Destroy(result);
+        _closeDoorMap.SetActive(true);
+        _openDoorMap.SetActive(false);
 
-        _roundManager.StartWave(_roundCount);
+        _roundManager.StartWave(roundCount);
         State = Define.RogueState.InRound;
     }
     private void UpdateInRound()
@@ -87,26 +90,26 @@ public class LogueGameScene : MonoBehaviour
     }
     private void UpdateResult()
     {
-        CloseDoorMap.SetActive(false);
-        OpenDoorMap.SetActive(true);
+        _closeDoorMap.SetActive(false);
+        _openDoorMap.SetActive(true);
 
-        _result = Instantiate(_resultArr[Random.Range(0, _resultArr.Length)]);
-        _result.transform.position = _resultPivot.transform.position;
-        _roundCount++;
+        result = Instantiate(_resultArr[Random.Range(0, _resultArr.Length)]);
+        result.transform.position = _resultPivot.transform.position;
+        roundCount++;
     }
     private void UpdateEnd()
     {
-        if (PlayerPrefs.GetInt("RogueBest", 0) < _roundCount)
+        if (PlayerPrefs.GetInt("RogueBest", 0) < roundCount)
         {
-            PlayerPrefs.SetInt("RogueBest", _roundCount);
-            LobbyScene.Instance.ShowRougeResult = 1;
+            PlayerPrefs.SetInt("RogueBest", roundCount);
+            LobbyScene.Instance._showRougeResult = 1;
         }
         else
         {
-            LobbyScene.Instance.ShowRougeResult = 0;
+            LobbyScene.Instance._showRougeResult = 0;
         }
 
-        _roundCount = 0;
+        roundCount = 0;
         LobbyScene.Instance.UpdateScore();
         _roundManager.EndGame();
     }

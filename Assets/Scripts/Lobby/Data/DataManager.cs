@@ -8,12 +8,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class DataManager : MonoBehaviour
 {
-    public static DataManager Instance;
+    public static DataManager instance;
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        if (instance == null)
+            instance = this;
     }
 
     public void Save(string[] animatorAddresses, string savePath)
@@ -21,7 +21,7 @@ public class DataManager : MonoBehaviour
         var dataList = new AnimatorSaveDataList();
 
         foreach (var addr in animatorAddresses)
-            dataList.Animators.Add(new AnimatorSaveData { AnimatorAddress = addr });
+            dataList.animators.Add(new AnimatorSaveData { animatorAddress = addr });
 
         string json = JsonUtility.ToJson(dataList, true);
         File.WriteAllText(savePath, json);
@@ -38,15 +38,15 @@ public class DataManager : MonoBehaviour
         string json = File.ReadAllText(savePath);
         var dataList = JsonUtility.FromJson<AnimatorSaveDataList>(json);
 
-        if (dataList.Animators.Count != targetAnimators.Length)
+        if (dataList.animators.Count != targetAnimators.Length)
         {
             Debug.LogError("Animator 개수 불일치");
             return null;
         }
 
-        for (int i = 0; i < dataList.Animators.Count; i++)
+        for (int i = 0; i < dataList.animators.Count; i++)
         {
-            string addr = dataList.Animators[i].AnimatorAddress;
+            string addr = dataList.animators[i].animatorAddress;
             var animator = targetAnimators[i];
 
             Addressables.LoadAssetAsync<RuntimeAnimatorController>(addr).Completed += handle =>
@@ -59,6 +59,6 @@ public class DataManager : MonoBehaviour
         }
 
         // 주소만 추출해서 반환
-        return dataList.Animators.Select(a => a.AnimatorAddress).ToArray();
+        return dataList.animators.Select(a => a.animatorAddress).ToArray();
     }
 }
