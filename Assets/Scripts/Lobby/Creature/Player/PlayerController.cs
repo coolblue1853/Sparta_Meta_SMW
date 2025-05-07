@@ -17,6 +17,8 @@ public class PlayerController : BaseController
 
     [SerializeField] private string[] animatorAddresses;
     [SerializeField] private Animator[] targetAnimators;
+    private Vector3 _ridePivot = new Vector3(0.1f, 0.94f);
+    private float _rideSpeed = 2f;
 
     private string savePath => Application.persistentDataPath + "/Player.json";
     protected override void Init()
@@ -80,7 +82,7 @@ public class PlayerController : BaseController
             }
         }
 
-        _spriteRenderer.transform.localPosition = new Vector3(0, _height, 0);
+        _sprites.transform.localPosition = new Vector3(0, _height, 0);
     }
 
 
@@ -94,14 +96,16 @@ public class PlayerController : BaseController
             _attackDir = input;
             if (input.x > 0)
             {
-                _spriteRenderer.flipX = false;
+                _mainSpriteRenderer.flipX = false;
                 _weaponRnderer.flipX = false;
+                _rideSpriteRenderer.flipX = false;
             }
 
             if (input.x < 0)
             {
-                _spriteRenderer.flipX = true;
+                _mainSpriteRenderer.flipX = true;
                 _weaponRnderer.flipX = true;
+                _rideSpriteRenderer.flipX = true;
             }
 
 
@@ -144,6 +148,24 @@ public class PlayerController : BaseController
             {
                 State = Define.State.Moving;
             }
+        }
+    }
+    void OnRide(InputValue inputValue)
+    {
+        if (_rideSpriteRenderer.gameObject.activeSelf == false)
+        {
+            _mainSpriteRenderer.transform.localPosition = _ridePivot;
+            _weaponPivot.transform.localPosition = _ridePivot;
+            _rideSpriteRenderer.gameObject.SetActive(true);
+            //이동속도 증감 부분. 추후 개선 필요
+            _resourceController.UpdateSpeend(_rideSpeed);
+        }
+        else
+        {
+            _mainSpriteRenderer.transform.localPosition = Vector3.zero;
+            _weaponPivot.transform.localPosition = Vector3.zero;
+            _rideSpriteRenderer.gameObject.SetActive(false);
+            _resourceController.UpdateSpeend(-_rideSpeed);
         }
     }
 

@@ -6,21 +6,20 @@ public abstract class BaseController : MonoBehaviour
 {
     protected ResourceController _resourceController;
     //자식의 스프라이트 오브젝트
-    [SerializeField]
-    protected SpriteRenderer _spriteRenderer;
+
+    [SerializeField] protected SpriteRenderer _mainSpriteRenderer;
+    [SerializeField] protected SpriteRenderer _rideSpriteRenderer;
+    [SerializeField] protected GameObject _sprites;
     protected Rigidbody2D _rigidbody;
 
     public Animator _animator;
 
     [Header("Define")]
-    [SerializeField]
-    protected Define.State _state = Define.State.Idle;
-    [SerializeField]
-    protected Define.Dir _animDir = Define.Dir.None;
+    [SerializeField] protected Define.State _state = Define.State.Idle;
+    [SerializeField] protected Define.Dir _animDir = Define.Dir.None;
 
     [Header("Dir")]
-    [SerializeField]
-    protected Vector2 _moveDir = Vector2.zero;
+    [SerializeField] protected Vector2 _moveDir = Vector2.zero;
     public Vector2 _MoveDir { get { return _moveDir; } }
 
 
@@ -29,8 +28,7 @@ public abstract class BaseController : MonoBehaviour
     [SerializeField] public WeaponHandler _weaponHandler;
     [SerializeField] protected SpriteRenderer _weaponRnderer;
 
-    [SerializeField]
-    private Transform _weaponPivot;
+    [SerializeField] protected Transform _weaponPivot;
     protected Vector2 _attackDir = Vector2.right;
     protected bool _isAttacking;
     private float _timeSinceLastAttack = float.MaxValue;
@@ -56,7 +54,7 @@ public abstract class BaseController : MonoBehaviour
         {
             Destroy(_weaponHandler.gameObject);
         }
-        _weaponHandler = Instantiate(_WeaponPrefab, _spriteRenderer.transform);
+        _weaponHandler = Instantiate(_WeaponPrefab, _mainSpriteRenderer.transform);
         _weaponRnderer = _weaponHandler.transform.GetChild(0).GetComponent<SpriteRenderer>();
         _weaponHandler.transform.parent = _weaponRnderer.transform;
         _weaponHandler.transform.position = _weaponPivot.position;
