@@ -61,13 +61,13 @@ public class EnemyController : BaseController
     {
         if (input.x > 0)
         {
-            _spriteRenderer.flipX = false;
+            _mainSpriteRenderer.flipX = false;
             _weaponRnderer.flipX = false;
         }
 
         if (input.x < 0)
         {
-            _spriteRenderer.flipX = true;
+            _mainSpriteRenderer.flipX = true;
             _weaponRnderer.flipX = true;
         }
     }

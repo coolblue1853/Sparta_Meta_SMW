@@ -259,7 +259,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e88e0debcbf6541966dc6b4a513c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 8323292686032013114}
+  _mainSpriteRenderer: {fileID: 8323292686032013114}
+  _rideSpriteRenderer: {fileID: 0}
+  _sprites: {fileID: 0}
   _animator: {fileID: 4872783729697991275}
   _state: 2
   _animDir: 0
