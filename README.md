@@ -364,22 +364,25 @@ public class DataManager : MonoBehaviour
 
 
 ```
-  void OnRide(InputValue inputValue)
-  {
-      if (_rideSpriteRenderer.gameObject.activeSelf == false)
-      {
-          _mainSpriteRenderer.transform.localPosition = _ridePivot;
-          _rideSpriteRenderer.gameObject.SetActive(true);
-          //이동속도 증감 부분. 추후 개선 필요
-          _resourceController.UpdateSpeend(_rideSpeed);
-      }
-      else
-      {
-          _mainSpriteRenderer.transform.localPosition = Vector3.zero;
-          _rideSpriteRenderer.gameObject.SetActive(false);
-          _resourceController.UpdateSpeend(-_rideSpeed);
-      }
-  }
+    void OnRide(InputValue inputValue)
+    {
+        if (_rideSpriteRenderer.gameObject.activeSelf == false)
+        {
+            _mainSpriteRenderer.transform.localPosition = _ridePivot;
+            _weaponPivot.transform.localPosition = _ridePivot;
+            _rideSpriteRenderer.gameObject.SetActive(true);
+            //이동속도 증감 부분. 추후 개선 필요
+            _resourceController.UpdateSpeend(_rideSpeed);
+        }
+        else
+        {
+            _mainSpriteRenderer.transform.localPosition = Vector3.zero;
+            _weaponPivot.transform.localPosition = Vector3.zero;
+            _rideSpriteRenderer.gameObject.SetActive(false);
+            _resourceController.UpdateSpeend(-_rideSpeed);
+        }
+    }
+
 ```
 - 탑승물은 x 버튼을 이용하여 탑승/해제하고, 이동속도가 증가하도록 설정했습니다.
 - 추가적인 작업이 들어간다면 탑승물을 고르고 선택할 수 있는 부분, 능력치 자체를 탑승물 내부에 넣어두는 방식 사용 등이 있어 보입니다.
